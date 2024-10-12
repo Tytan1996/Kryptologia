@@ -1,4 +1,4 @@
-Jezyk: Pl, Polskie/Niemieckie litery: True, liczby: True, małe litery: True
+Jezyk: Pl, klucz 7, Polskie/Niemieckie litery: True, liczby: True, małe litery: True
 Zażółć gęślą jaźń12
 Zażółć gęślą jaźń12
 Zażółć gęślą jaźń12

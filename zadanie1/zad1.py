@@ -1,6 +1,5 @@
 # coding: utf-8
 import re
-import inspect
 
 def czyBedaLiczby():
     czyLiczba= input("Czy usunac liczby w teksie syfrowanym? [t/n]\nOdpowiedz: ")
@@ -23,7 +22,7 @@ def czyDuzeLitery():
 def wyborJezyka():
     try:
         jezyk=int(input("Wybierz jezyk:\n1 - Polski,\n2 - Niemiecki,\n3 - Angielski,\n4 - Korerański\nTwoja opcja: "))
-        if jezyk in range(1,4):
+        if jezyk in range(1,5):
             return jezyk
         else:
             print("prowadz poprawny wybor")
@@ -31,6 +30,13 @@ def wyborJezyka():
     except ValueError:
         print("Wporwadz liczbe, a nie tekst")
         return wyborJezyka()
+def podajKlucz():
+    try:
+        klucz=int(input("Wybierz jezyk:\n1 - Polski,\n2 - Niemiecki,\n3 - Angielski,\n4 - Korerański\nTwoja opcja: "))
+        return klucz
+    except ValueError:
+        print("Wporwadz liczbe, a nie tekst")
+        return podajKlucz()
 def czyUsunacPolskieZnaki():
     czyBedaPolskieZnaki= input("Czy usunac polskie/niemieckie litery? [t/n]\nTwoja odpowiedz: ")
     if czyBedaPolskieZnaki == 't':
@@ -38,33 +44,36 @@ def czyUsunacPolskieZnaki():
     elif czyBedaPolskieZnaki =='n':
         return False
     else:
-        print ("Porwadz poprawna odpowiedz")
+        print ("prowadz poprawna odpowiedz")
         return czyUsunacPolskieZnaki();
 def wczytajPlik():
-    nazwaPliku=input("Wprowadz nazwe pliku, bez .txt\nNazwa pliku: ")
+    nazwa_pliku = input("Wprowadź nazwę pliku, bez .txt\nNazwa pliku: ")
     try:
-        Plik=open(nazwaPliku+".txt","r", encoding="utf-8")
-        tekst=Plik.read()
-        Plik.close()
+        with open(nazwa_pliku + ".txt", "r", encoding="utf-8") as plik:
+            tekst = plik.read()
+        
         # Definiowanie wzorca do wyszukiwania
-        wzorzec = r'Jezyk:\s*(\w+),\s*Polskie/Niemieckie\s*litery:\s*(True|False),\s*liczby:\s*(True|False),\s*małe\s*litery:\s*(True|False)'
+        wzorzec = r'Jezyk:\s*(\w+),\s*klucz\s*(\d+),\s*Polskie/Niemieckie\s*litery:\s*(True|False),\s*liczby:\s*(True|False),\s*małe\s*litery:\s*(True|False)'
         # Wyszukiwanie w tekście
-        if re.search(wzorzec, tekst):
-            wynik=re.search(wzorzec, tekst)
-            if wynik:
-                jezyk = wynik.group(1)  # Wartość języka
-                polskie_niemieckie = wynik.group(2)  # Polskie/Niemieckie litery
-                liczby = wynik.group(3)  # Liczby
-                male_litery = wynik.group(4)  # Małe litery
-                wiersze = tekst.splitlines()  # Podziel tekst na wiersze
-                wiersze.pop(0)  # Usuń pierwszy wiersz
-                tekst = "\n".join(wiersze)  # Połącz pozostałe wiersze
-            return tekst,jezyk,polskie_niemieckie,liczby,male_litery
+        wynik = re.search(wzorzec, tekst)
+        if wynik:
+            jezyk = wynik.group(1)  # Wartość języka
+            klucz = int(wynik.group(2))  # Klucz (konwertowany na int)
+            polskie_niemieckie = wynik.group(3)  # Polskie/Niemieckie litery
+            liczby = wynik.group(4)  # Liczby
+            male_litery = wynik.group(5)  # Małe litery
+            
+            # Usuń pierwszy wiersz
+            wiersze = tekst.splitlines()
+            wiersze.pop(0)
+            tekst = "\n".join(wiersze)  # Połącz pozostałe wiersze
+            
+            return tekst, jezyk, polskie_niemieckie, liczby, male_litery, klucz
         else:
-            print("Nie znaleziono danych do kodowanaia tekstu lub je zle napisano.")
-        return tekst
-    except:
-        print("Nie istnieje plik, podaj poprawna nazwe.")
+            print("Nie znaleziono danych do kodowania tekstu lub są źle napisane.")
+            return tekst
+    except FileNotFoundError:
+        print("Nie istnieje plik, podaj poprawną nazwę.")
         return wczytajPlik()
 def usunCyfry(tekst):
     cyfry="0123456789"
@@ -104,7 +113,7 @@ def przeksztalcenie(tekst,tekst2):
             tekst2=tekst2+'\n'
         tekst2=tekst2+tekst[i]
     return tekst2
-def szyfrowanie(tekst,jezyk):
+def szyfrowanie(tekst,jezyk,klucz):
     znakiPlMale=[]
     znakiPlMale += ['ą', 'ę', 'ó', 'ł', 'ż', 'ź', 'ć', 'ń']
     znakiPlDuze =[znak.upper() for znak in znakiPlMale]
@@ -112,7 +121,6 @@ def szyfrowanie(tekst,jezyk):
     znakiDeMale +=['ä', 'ö', 'ü', 'ß']
     znakiDeDuze = []
     znakiDeDuze +=['Ä', 'Ö', 'Ü']
-    klucz=5
     dlugoscTekstu=range(len(tekst))
     znakiPl="ąęółżźćń"
     szyfr=""
@@ -153,12 +161,13 @@ def Menu():
     liniaTekstu=""
     tekstSzyfrowany=""
     wyniki = wczytajPlik()
-    if len(wyniki)==5:
+    if len(wyniki)==6:
         tekst=wyniki[0]
         jezyk=wyniki[1]
         polskie_niemieckie=wyniki[2]
         liczby=wyniki[3]
         maleLitery=wyniki[4]
+        klucz=wyniki[5]
         print(f"Język: {jezyk}")
         print(f"Polskie/Niemieckie litery: {polskie_niemieckie}")
         print(f"Liczby: {liczby}")
@@ -179,10 +188,13 @@ def Menu():
         polskie_niemieckie=None
         liczby=None
         maleLitery=None
+        klucz=None
     # Sprawdź, czy język jest None
     if jezyk is None:
         jezyk = wyborJezyka()
 
+    if klucz is None: 
+        klucz=podajKlucz()
     # Usuń cyfry, jeśli jest to konieczne
     if (jezyk is None and czyBedaLiczby()) or (liczby is False):
         tekst = usunCyfry(tekst)
@@ -197,7 +209,7 @@ def Menu():
     
     tekst=usunZnaki(tekst)    
     tekstPrzeksztalcony=przeksztalcenie(tekst,tekstPrzeksztalcony)
-    tekstSzyfrowany=szyfrowanie(tekstPrzeksztalcony,jezyk)
+    tekstSzyfrowany=szyfrowanie(tekstPrzeksztalcony,jezyk,klucz)
     zapisPliku(tekstSzyfrowany)
     print("udalo sie.\nKoncze dzialanie programu!")
 

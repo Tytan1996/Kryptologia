@@ -1,6 +1,6 @@
 Jak nie chcemy wybierać opcji to wystraczy w 1 wierszu dodać:
 
-Jezyk: Pl, Polskie/Niemieckie litery: True, liczby: True, małe litery: True
+Jezyk: Pl, klucz 7, Polskie/Niemieckie litery: True, liczby: True, małe litery: True
 
 dokładnie ten tekst, innaczej odczyta to jako tekst do zaszyfrowania
 Wartości mogą być True/False
