@@ -32,7 +32,7 @@ def wyborJezyka():
         return wyborJezyka()
 def podajKlucz():
     try:
-        klucz=int(input("Wybierz jezyk:\n1 - Polski,\n2 - Niemiecki,\n3 - Angielski,\n4 - Korerański\nTwoja opcja: "))
+        klucz=int(input("Wybierz jezyk:\n1 - Polski,\n2 - Niemiecki,\n3 - Angielski,\n4 - Koreański\nTwoja opcja: "))
         return klucz
     except ValueError:
         print("Wporwadz liczbe, a nie tekst")
@@ -88,8 +88,8 @@ def usunZnaki(tekst):
         tekst=tekst.replace(symbole[i],"")
     return tekst
 def usunPolskieZnaki(tekst,jezyk):
-    znakiPl="ąęółżźćńĄĘÓŁŻŹĆŃ"
-    znaki="aeolzzcnAEOLZZCN"
+    znakiPl="ąęółżźśćńĄĘÓŁŻŹŚĆŃ"
+    znaki="aeolzzścnAEOLZZŚCN"
     znakiDe="äöüßÄÖÜ"
     znaki2="aouBAOU"
     if jezyk==1:
@@ -115,12 +115,12 @@ def przeksztalcenie(tekst,tekst2):
     return tekst2
 def szyfrowanie(tekst,jezyk,klucz):
     znakiPlMale=[]
-    znakiPlMale += ['ą', 'ę', 'ó', 'ł', 'ż', 'ź', 'ć', 'ń']
+    znakiPlMale += ['ą','ć', 'ę','ł', 'ń' ,'ó','ś', 'ż', 'ź']
     znakiPlDuze =[znak.upper() for znak in znakiPlMale]
     znakiDeMale = []
-    znakiDeMale +=['ä', 'ö', 'ü', 'ß']
+    znakiDeMale +=['ä','ü', 'ö', 'ß']
     znakiDeDuze = []
-    znakiDeDuze +=['Ä', 'Ö', 'Ü']
+    znakiDeDuze +=['Ä', 'Ü', 'Ö']
     dlugoscTekstu=range(len(tekst))
     znakiPl="ąęółżźćń"
     szyfr=""
@@ -146,6 +146,10 @@ def szyfrowanie(tekst,jezyk,klucz):
                     szyfr+=chr((ord(tekst[i])-65+klucz)%26+65)
         elif tekst[i].isdigit():
             szyfr+=str((int(tekst[i])+klucz)%10)
+        elif ('가' <= tekst[i] <= '힣') and (jezyk==4):
+            nowaPozycja=(ord(char) - ord('가') + klucz) % (ord('힣') - ord('가') + 1)
+            nowaLitera=chr(ord('가') + nowa_pozycja)
+            szyfr+=nowaLitera
         else:
             szyfr+=tekst[i]
     return szyfr
@@ -195,6 +199,7 @@ def Menu():
 
     if klucz is None: 
         klucz=podajKlucz()
+        
     # Usuń cyfry, jeśli jest to konieczne
     if (jezyk is None and czyBedaLiczby()) or (liczby is False):
         tekst = usunCyfry(tekst)
