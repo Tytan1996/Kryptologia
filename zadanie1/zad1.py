@@ -89,7 +89,7 @@ def usunZnaki(tekst):
     return tekst
 def usunPolskieZnaki(tekst,jezyk):
     znakiPl="ąęółżźśćńĄĘÓŁŻŹŚĆŃ"
-    znaki="aeolzzścnAEOLZZŚCN"
+    znaki="aeolzzscnAEOLZZŚCN"
     znakiDe="äöüßÄÖÜ"
     znaki2="aouBAOU"
     if jezyk==1:
