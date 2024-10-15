@@ -42,7 +42,7 @@ def usunPolskieZnaki(tekst): #funkcja Maćka
 def sprawdzenie_zgodnosci_tekstu():
     print("podaj teraz plik orginalny aby sprawdzić zgodność")
     org = wczytajPlik()
-    plik=open("odkodowane_pl.txt","r", encoding="utf-8")  #WAŻNE!!!!! TU ZMIENIAMY KTORY ODKODOWANY PLIK BIERZEMY 
+    plik=open("odkodowane_de.txt","r", encoding="utf-8")  #WAŻNE!!!!! TU ZMIENIAMY KTORY ODKODOWANY PLIK BIERZEMY 
     odkodowany=plik.read()
     plik.close()
     #org = org.lower()
@@ -78,12 +78,14 @@ def odkodowanie():
     alfabet_duzy="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     znakiPlMale="ąęółżźćńś"
     znakiPlDuze="ĄĘÓŁŻŹĆŃŚ"
-    znakiDeMale="äöüß"
-    znakiDeDuze="ÄÖÜ"
+    znakiDeMale="äüöß"
+    znakiDeDuze="ÄÜÖ"
     print("podaj nazwę pliku z zakodowanym tekstem ")
     tekst = wczytajPlik()
     odkodowany_tekst=""
     klucz = int(input("Podaj klucz szyfrowania: "))
+    print(f'Indeks "Ö" w znakiDeDuze: {znakiDeDuze.index("Ö")}')
+
     for i in tekst:
         if i in alfabet_maly:
             odkodowany_tekst+=alfabet_maly[(alfabet_maly.index(i)-klucz)%len(alfabet_maly)]
@@ -99,11 +101,30 @@ def odkodowanie():
             odkodowany_tekst+=znakiDeDuze[(znakiDeDuze.index(i)-klucz)%len(znakiDeDuze)]
         else:
             odkodowany_tekst+=i
+    print(f"Odszyfrowywany znak: {i}, Odszyfrowany: {odkodowany_tekst[-1]}")
     zapisPliku(odkodowany_tekst)
     sprawdzenie_zgodnosci_tekstu()
 
-odkodowanie()
 
+#odkodowanie()
+#'''
+def porownaj_teksty(orginalny, odszyfrowany):
+    roznice = []
+    for index, (o, d) in enumerate(zip(orginalny, odszyfrowany)):
+        if o != d:
+            roznice.append((index, o, d))
+    return roznice
+
+# Przykład użycia
+orginalny_tekst = "FamilieHuberwohntinderNähevonWienFrankundMonikahabendenKinderneinenTaginWienversprochenAmSamstagfahrensiegemeinsamnachWienindieHauptstadtvonÖsterreichDasAutostellensieineinemParkhausabundfahrenmitderUBahnweiterindieInnenstadtAlsErstesbesichtigensiedenStephansdomDasWahrzeichenvonWienDiesealtegotischeKirchewollenalleBesuchersehenWerZeithatkanndenTurmbesteigenoderdieKatakombenunterderKirchebesichtigenDiePummerinistdiegrößteGlockeÖsterreichsSiehängtimNordturmundkannmiteinemAufzugerreichtwerdenFamilieHuberistbeeindrucktSiezündeninderKircheeineKerzeanundgehenweiterInzwischenhabenalleHungerundessenbeieinemWürstelstandeineBurenwurstDasisteineWienerSpezialitätEsschmecktihnenundsiespazierenquerdurchdieAltstadtAlsNächstesmachensieeineBesichtigungsfahrtmitderStraßenbahnDieRingstraßeführtrundumdasZentrumderStadtSienutzendieganznormaleStraßenbahnundkönnenbeimVorbeifahrendieprächtigenBautenbewundernSiesehendieVotivkirchedasWienerRathausdasBurgtheaterdasParlamentzweigroßeMuseenunddieWienerStaatsoperDieKinderwollenendlichindenPraterSiewollenkeineHäusermehranschauenDerPrateristeinVergnügungsparkHierfahrensiemitRingelspielAutodromunddemRiesenradDasistaucheinesderWahrzeichenderStadtFrankmöchteinsSchweizerHauseinengroßenBiergartenDortmachensieRastundessenWienerSchnitzelSiewolltennochzumwunderschönenSchlossSchönbrunnundindenTiergartenDafürreichtdieZeitabernichtDasmachensiebeimnächstenBesuchinWien"
+odszyfrowany_tekst = "FamilieHuberwohntinderNähevonWienFrankundMonikahabendenKinderneinenTaginWienversprochenAmSamstagfahrensiegemeinsamnachWienindieHauptstadtvonTsterreichDasAutostellensieineinemParkhausabundfahrenmitderUBahnweiterindieInnenstadtAlsErstesbesichtigensiedenStephansdomDasWahrzeichenvonWienDiesealtegotischeKirchewollenalleBesuchersehenWerZeithatkanndenTurmbesteigenoderdieKatakombenunterderKirchebesichtigenDiePummerinistdiegrößteGlockeTsterreichsSiehängtimNordturmundkannmiteinemAufzugerreichtwerdenFamilieHuberistbeeindrucktSiezündeninderKircheeineKerzeanundgehenweiterInzwischenhabenalleHungerundessenbeieinemWürstelstandeineBurenwurstDasisteineWienerSpezialitätEsschmecktihnenundsiespazierenquerdurchdieAltstadtAlsNächstesmachensieeineBesichtigungsfahrtmitderStraßenbahnDieRingstraßeführtrundumdasZentrumderStadtSienutzendieganznormaleStraßenbahnundkönnenbeimVorbeifahrendieprächtigenBautenbewundernSiesehendieVotivkirchedasWienerRathausdasBurgtheaterdasParlamentzweigroßeMuseenunddieWienerStaatsoperDieKinderwollenendlichindenPraterSiewollenkeineHäusermehranschauenDerPrateristeinVergnügungsparkHierfahrensiemitRingelspielAutodromunddemRiesenradDasistaucheinesderWahrzeichenderStadtFrankmöchteinsSchweizerHauseinengroßenBiergartenDortmachensieRastundessenWienerSchnitzelSiewolltennochzumwunderschönenSchlossSchönbrunnundindenTiergartenDafürreichtdieZeitabernichtDasmachensiebeimnächstenBesuchinWien"
+
+roznice = porownaj_teksty(orginalny_tekst, odszyfrowany_tekst)
+print(f"Liczba różnic: {len(roznice)}")
+for index, o, d in roznice:
+    print(f"Indeks {index}: oryginał '{o}', odszyfrowany '{d}'")
+
+#'''
 
 
 
