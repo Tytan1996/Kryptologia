@@ -42,12 +42,12 @@ def usunPolskieZnaki(tekst): #funkcja Maćka
 def sprawdzenie_zgodnosci_tekstu():
     print("podaj teraz plik orginalny aby sprawdzić zgodność")
     org = wczytajPlik()
-    plik=open("odkodowane_de.txt","r", encoding="utf-8")  #WAŻNE!!!!! TU ZMIENIAMY KTORY ODKODOWANY PLIK BIERZEMY 
+    plik=open("odkodowane_ang.txt","r", encoding="utf-8")  #WAŻNE!!!!! TU ZMIENIAMY KTORY ODKODOWANY PLIK BIERZEMY 
     odkodowany=plik.read()
     plik.close()
     #org = org.lower()
     org = usunZnaki(org)
-    org = usunCyfry(org)
+    #org = usunCyfry(org)
     #org = usunPolskieZnaki(org)
     odkodowany = usunZnaki(odkodowany)
     print(org)
@@ -76,15 +76,15 @@ def sprawdzenie_zgodnosci_tekstu():
 def odkodowanie():
     alfabet_maly="abcdefghijklmnopqrstuvwxyz"
     alfabet_duzy="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    znakiPlMale="ąęółżźćńś"
-    znakiPlDuze="ĄĘÓŁŻŹĆŃŚ"
+    znakiPlMale="ąćęłńóśżź"
+    znakiPlDuze="ĄĆĘŁŃÓŚŻŹ"
     znakiDeMale="äüöß"
     znakiDeDuze="ÄÜÖ"
     print("podaj nazwę pliku z zakodowanym tekstem ")
     tekst = wczytajPlik()
     odkodowany_tekst=""
     klucz = int(input("Podaj klucz szyfrowania: "))
-    print(f'Indeks "Ö" w znakiDeDuze: {znakiDeDuze.index("Ö")}')
+
 
     for i in tekst:
         if i in alfabet_maly:
@@ -99,32 +99,17 @@ def odkodowanie():
             odkodowany_tekst+=znakiDeMale[(znakiDeMale.index(i)-klucz)%len(znakiDeMale)]
         elif i in znakiDeDuze:
             odkodowany_tekst+=znakiDeDuze[(znakiDeDuze.index(i)-klucz)%len(znakiDeDuze)]
+        elif i.isdigit():
+            odkodowany_tekst += str((int(i) - klucz) % 10)
         else:
             odkodowany_tekst+=i
-    print(f"Odszyfrowywany znak: {i}, Odszyfrowany: {odkodowany_tekst[-1]}")
     zapisPliku(odkodowany_tekst)
     sprawdzenie_zgodnosci_tekstu()
 
 
-#odkodowanie()
-#'''
-def porownaj_teksty(orginalny, odszyfrowany):
-    roznice = []
-    for index, (o, d) in enumerate(zip(orginalny, odszyfrowany)):
-        if o != d:
-            roznice.append((index, o, d))
-    return roznice
 
-# Przykład użycia
-orginalny_tekst = "FamilieHuberwohntinderNähevonWienFrankundMonikahabendenKinderneinenTaginWienversprochenAmSamstagfahrensiegemeinsamnachWienindieHauptstadtvonÖsterreichDasAutostellensieineinemParkhausabundfahrenmitderUBahnweiterindieInnenstadtAlsErstesbesichtigensiedenStephansdomDasWahrzeichenvonWienDiesealtegotischeKirchewollenalleBesuchersehenWerZeithatkanndenTurmbesteigenoderdieKatakombenunterderKirchebesichtigenDiePummerinistdiegrößteGlockeÖsterreichsSiehängtimNordturmundkannmiteinemAufzugerreichtwerdenFamilieHuberistbeeindrucktSiezündeninderKircheeineKerzeanundgehenweiterInzwischenhabenalleHungerundessenbeieinemWürstelstandeineBurenwurstDasisteineWienerSpezialitätEsschmecktihnenundsiespazierenquerdurchdieAltstadtAlsNächstesmachensieeineBesichtigungsfahrtmitderStraßenbahnDieRingstraßeführtrundumdasZentrumderStadtSienutzendieganznormaleStraßenbahnundkönnenbeimVorbeifahrendieprächtigenBautenbewundernSiesehendieVotivkirchedasWienerRathausdasBurgtheaterdasParlamentzweigroßeMuseenunddieWienerStaatsoperDieKinderwollenendlichindenPraterSiewollenkeineHäusermehranschauenDerPrateristeinVergnügungsparkHierfahrensiemitRingelspielAutodromunddemRiesenradDasistaucheinesderWahrzeichenderStadtFrankmöchteinsSchweizerHauseinengroßenBiergartenDortmachensieRastundessenWienerSchnitzelSiewolltennochzumwunderschönenSchlossSchönbrunnundindenTiergartenDafürreichtdieZeitabernichtDasmachensiebeimnächstenBesuchinWien"
-odszyfrowany_tekst = "FamilieHuberwohntinderNähevonWienFrankundMonikahabendenKinderneinenTaginWienversprochenAmSamstagfahrensiegemeinsamnachWienindieHauptstadtvonTsterreichDasAutostellensieineinemParkhausabundfahrenmitderUBahnweiterindieInnenstadtAlsErstesbesichtigensiedenStephansdomDasWahrzeichenvonWienDiesealtegotischeKirchewollenalleBesuchersehenWerZeithatkanndenTurmbesteigenoderdieKatakombenunterderKirchebesichtigenDiePummerinistdiegrößteGlockeTsterreichsSiehängtimNordturmundkannmiteinemAufzugerreichtwerdenFamilieHuberistbeeindrucktSiezündeninderKircheeineKerzeanundgehenweiterInzwischenhabenalleHungerundessenbeieinemWürstelstandeineBurenwurstDasisteineWienerSpezialitätEsschmecktihnenundsiespazierenquerdurchdieAltstadtAlsNächstesmachensieeineBesichtigungsfahrtmitderStraßenbahnDieRingstraßeführtrundumdasZentrumderStadtSienutzendieganznormaleStraßenbahnundkönnenbeimVorbeifahrendieprächtigenBautenbewundernSiesehendieVotivkirchedasWienerRathausdasBurgtheaterdasParlamentzweigroßeMuseenunddieWienerStaatsoperDieKinderwollenendlichindenPraterSiewollenkeineHäusermehranschauenDerPrateristeinVergnügungsparkHierfahrensiemitRingelspielAutodromunddemRiesenradDasistaucheinesderWahrzeichenderStadtFrankmöchteinsSchweizerHauseinengroßenBiergartenDortmachensieRastundessenWienerSchnitzelSiewolltennochzumwunderschönenSchlossSchönbrunnundindenTiergartenDafürreichtdieZeitabernichtDasmachensiebeimnächstenBesuchinWien"
+odkodowanie()
 
-roznice = porownaj_teksty(orginalny_tekst, odszyfrowany_tekst)
-print(f"Liczba różnic: {len(roznice)}")
-for index, o, d in roznice:
-    print(f"Indeks {index}: oryginał '{o}', odszyfrowany '{d}'")
-
-#'''
 
 
 
