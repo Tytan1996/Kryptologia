@@ -139,7 +139,7 @@ def szyfrowanie(tekst,jezyk,klucz):
                 if tekst[i] in znakiPlDuze and jezyk==1:
                     numerPl=znakiPlDuze.index(tekst[i])
                     szyfr+=znakiPlDuze[(numerPl+klucz)%len(znakiPlDuze)]
-                elif tekst[i] in znakiDeMale and jezyk==2:
+                elif tekst[i] in znakiDeDuze and jezyk==2:
                     numerDe=znakiDeDuze.index(tekst[i])
                     szyfr+=znakiDeDuze[(numerDe+klucz)%len(znakiDeDuze)]
                 else:
