@@ -10,6 +10,7 @@ def czyBedaLiczby():
     else:
         print("Prowadz poprawna odpowiedz")
         return czyBedaLiczby()
+    
 def czyDuzeLitery():
     czyLiczba= input("Czy zakodowac w malych literach? [t/n]\nOdpowiedz: ")
     if czyLiczba=='t':
@@ -19,6 +20,7 @@ def czyDuzeLitery():
     else:
         print("Prowadz poprawna odpowiedz")
         return czyDuzeLitery()
+    
 def wyborJezyka():
     try:
         jezyk=int(input("Wybierz jezyk:\n1 - Polski,\n2 - Niemiecki,\n3 - Angielski,\n4 - Korerański\nTwoja opcja: "))
@@ -30,13 +32,15 @@ def wyborJezyka():
     except ValueError:
         print("Wporwadz liczbe, a nie tekst")
         return wyborJezyka()
+    
 def podajKlucz():
     try:
-        klucz=int(input("Wybierz jezyk:\n1 - Polski,\n2 - Niemiecki,\n3 - Angielski,\n4 - Koreański\nTwoja opcja: "))
+        klucz=int(input("Podaj klucz (liczba całkowita)\nTwoja opcja: "))
         return klucz
     except ValueError:
         print("Wporwadz liczbe, a nie tekst")
         return podajKlucz()
+    
 def czyUsunacPolskieZnaki():
     czyBedaPolskieZnaki= input("Czy usunac polskie/niemieckie litery? [t/n]\nTwoja odpowiedz: ")
     if czyBedaPolskieZnaki == 't':
@@ -46,6 +50,7 @@ def czyUsunacPolskieZnaki():
     else:
         print ("prowadz poprawna odpowiedz")
         return czyUsunacPolskieZnaki();
+    
 def wczytajPlik():
     nazwa_pliku = input("Wprowadź nazwę pliku, bez .txt\nNazwa pliku: ")
     try:
@@ -75,18 +80,21 @@ def wczytajPlik():
     except FileNotFoundError:
         print("Nie istnieje plik, podaj poprawną nazwę.")
         return wczytajPlik()
+    
 def usunCyfry(tekst):
     cyfry="0123456789"
     b=range(len(cyfry))
     for i in b:
         tekst=tekst.replace(cyfry[i],"")
     return tekst
+
 def usunZnaki(tekst):
     symbole=" .,'!:;/@#$%^&(*)-_+=[{]}|?\n\""
     b=range(len(symbole))
     for i in b:
         tekst=tekst.replace(symbole[i],"")
     return tekst
+
 def usunPolskieZnaki(tekst,jezyk):
     znakiPl="ąęółżźśćńĄĘÓŁŻŹŚĆŃ"
     znaki="aeolzzscnAEOLZZŚCN"
@@ -113,6 +121,7 @@ def przeksztalcenie(tekst,tekst2):
             tekst2=tekst2+'\n'
         tekst2=tekst2+tekst[i]
     return tekst2
+
 def szyfrowanie(tekst,jezyk,klucz):
     znakiPlMale=[]
     znakiPlMale += ['ą','ć', 'ę','ł', 'ń' ,'ó','ś', 'ż', 'ź']
@@ -147,17 +156,23 @@ def szyfrowanie(tekst,jezyk,klucz):
         elif tekst[i].isdigit():
             szyfr+=str((int(tekst[i])+klucz)%10)
         elif ('가' <= tekst[i] <= '힣') and (jezyk==4):
-            nowaPozycja=(ord(char) - ord('가') + klucz) % (ord('힣') - ord('가') + 1)
-            nowaLitera=chr(ord('가') + nowa_pozycja)
+            nowaPozycja=(ord(tekst[i]) - ord('가') + klucz) % (ord('힣') - ord('가') + 1)
+            nowaLitera=chr(ord('가') + nowaPozycja)
+            szyfr+=nowaLitera
+        elif ('ㄱ' <= tekst[i] <= 'ㅣ') and (jezyk==4):
+            nowaPozycja=(ord(tekst[i]) - ord('ㄱ') + klucz) % (ord('ㅣ') - ord('ㄱ') + 1)
+            nowaLitera=chr(ord('ㄱ') + nowaPozycja)
             szyfr+=nowaLitera
         else:
             szyfr+=tekst[i]
     return szyfr
+
 def zapisPliku(tekstSzyfrowany):
     nazwaPliku=input("Podaj nazwe pliku do zapisu (bez .txt): \nNazwa pliku: ")
     plik=open(nazwaPliku+".txt",'w', encoding="utf-8")
     plik.write(tekstSzyfrowany)
     plik.close()
+    
 def Menu():
     tekst=""
     tekstPrzeksztalcony=""
