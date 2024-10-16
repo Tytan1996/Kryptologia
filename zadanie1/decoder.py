@@ -41,8 +41,8 @@ def angielski(tekst, top=7):
     for i in range(0, len(lista)-1):
         if (ord(lista[i])-ord(lista[i+1]))%26!=(ord(lista2[i+j])-ord(lista2[i+j+1]))%26:
             j+=1
-        if 
-    if 
+        
+    
     lista2=lista2[j:j+top]
     
     shift=(ord(lista2[0])-ord(lista[0]))%26

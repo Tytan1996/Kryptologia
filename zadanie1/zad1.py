@@ -60,6 +60,7 @@ def wczytajPlik():
         # Definiowanie wzorca do wyszukiwania
         wzorzec = r'Jezyk:\s*(\w+),\s*klucz\s*(\d+),\s*Polskie/Niemieckie\s*litery:\s*(True|False),\s*liczby:\s*(True|False),\s*małe\s*litery:\s*(True|False)'
         # Wyszukiwanie w tekście
+
         wynik = re.search(wzorzec, tekst)
         if wynik:
             jezyk = wynik.group(1)  # Wartość języka
@@ -153,16 +154,18 @@ def szyfrowanie(tekst,jezyk,klucz):
                     szyfr+=znakiDeDuze[(numerDe+klucz)%len(znakiDeDuze)]
                 else:
                     szyfr+=chr((ord(tekst[i])-65+klucz)%26+65)
+            elif ('가' <= tekst[i] <= '힣') and (jezyk==4):
+                nowaPozycja=(ord(tekst[i]) - ord('가') + klucz) % (ord('힣') - ord('가') + 1)
+                nowaLitera=chr(ord('가') + nowaPozycja)
+                szyfr+=nowaLitera
+            elif ('ㄱ' <= tekst[i] <= 'ㅣ') and (jezyk==4):
+                nowaPozycja=(ord(tekst[i]) - ord('ㄱ') + klucz) % (ord('ㅣ') - ord('ㄱ') + 1)
+                nowaLitera=chr(ord('ㄱ') + nowaPozycja)
+                szyfr+=nowaLitera
+        
         elif tekst[i].isdigit():
             szyfr+=str((int(tekst[i])+klucz)%10)
-        elif ('가' <= tekst[i] <= '힣') and (jezyk==4):
-            nowaPozycja=(ord(tekst[i]) - ord('가') + klucz) % (ord('힣') - ord('가') + 1)
-            nowaLitera=chr(ord('가') + nowaPozycja)
-            szyfr+=nowaLitera
-        elif ('ㄱ' <= tekst[i] <= 'ㅣ') and (jezyk==4):
-            nowaPozycja=(ord(tekst[i]) - ord('ㄱ') + klucz) % (ord('ㅣ') - ord('ㄱ') + 1)
-            nowaLitera=chr(ord('ㄱ') + nowaPozycja)
-            szyfr+=nowaLitera
+        
         else:
             szyfr+=tekst[i]
     return szyfr
@@ -180,6 +183,7 @@ def Menu():
     liniaTekstu=""
     tekstSzyfrowany=""
     wyniki = wczytajPlik()
+    
     if len(wyniki)==6:
         tekst=wyniki[0]
         jezyk=wyniki[1]

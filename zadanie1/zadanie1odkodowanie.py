@@ -42,7 +42,7 @@ def usunPolskieZnaki(tekst): #funkcja Maćka
 def sprawdzenie_zgodnosci_tekstu():
     print("podaj teraz plik orginalny aby sprawdzić zgodność")
     org = wczytajPlik()
-    plik=open("odkodowane_ang.txt","r", encoding="utf-8")  #WAŻNE!!!!! TU ZMIENIAMY KTORY ODKODOWANY PLIK BIERZEMY 
+    plik=open("korean_odkod.txt","r", encoding="utf-8")  #WAŻNE!!!!! TU ZMIENIAMY KTORY ODKODOWANY PLIK BIERZEMY 
     odkodowany=plik.read()
     plik.close()
     #org = org.lower()
@@ -99,8 +99,16 @@ def odkodowanie():
             odkodowany_tekst+=znakiDeMale[(znakiDeMale.index(i)-klucz)%len(znakiDeMale)]
         elif i in znakiDeDuze:
             odkodowany_tekst+=znakiDeDuze[(znakiDeDuze.index(i)-klucz)%len(znakiDeDuze)]
+            
         elif i.isdigit():
             odkodowany_tekst += str((int(i) - klucz) % 10)
+            
+        elif '가' <= i <= '힣':
+            odkodowany_tekst+=chr(ord('가')+(ord(i) - ord('가') -klucz) % (ord('힣') - ord('가') + 1))
+        elif 'ㄱ' <= i <= 'ㅣ':
+            odkodowany_tekst+=chr(ord('ㄱ')+(ord(i) - ord('ㄱ') - klucz) % (ord('ㅣ') - ord('ㄱ') + 1))
+        
+        
         else:
             odkodowany_tekst+=i
     zapisPliku(odkodowany_tekst)
