@@ -1,5 +1,7 @@
 #napisać kod który będzie odszyfrowywał zaszyfrowane pliki znając klucz i będzie porównywał zgodność pliku zaszyfrowanego i rozszyfrowanego 
 
+
+
 def wczytajPlik():   #funkcja Maćka
     nazwaPliku=input("Wprowadz nazwe pliku , bez .txt\nNazwa pliku: ")
     try:
@@ -11,8 +13,8 @@ def wczytajPlik():   #funkcja Maćka
         print("Nie istnieje plik, podaj poprawna nazwe.")
         return wczytajPlik()
     
-def zapisPliku(tekstSzyfrowany): #funkcja Maćka
-    nazwaPliku=input("Podaj nazwe pliku do zapisu (bez .txt): \nNazwa pliku: ")
+def zapisPliku(tekstSzyfrowany, nazwaPliku): #funkcja Maćka
+    #nazwaPliku=input("Podaj nazwe pliku do zapisu (bez .txt): \nNazwa pliku: ")
     plik=open(nazwaPliku+".txt",'w', encoding="utf-8")
     plik.write(tekstSzyfrowany)
     plik.close()
@@ -39,19 +41,16 @@ def usunPolskieZnaki(tekst): #funkcja Maćka
         tekst=tekst.replace(znakiPl[i],znaki[i]) 
     return tekst
 
-def sprawdzenie_zgodnosci_tekstu():
+def sprawdzenie_zgodnosci_tekstu(nazwa):
     print("podaj teraz plik orginalny aby sprawdzić zgodność")
     org = wczytajPlik()
-    plik=open("korean_odkod.txt","r", encoding="utf-8")  #WAŻNE!!!!! TU ZMIENIAMY KTORY ODKODOWANY PLIK BIERZEMY 
+    plik=open(nazwa+".txt","r", encoding="utf-8")  
     odkodowany=plik.read()
     plik.close()
-    #org = org.lower()
     org = usunZnaki(org)
-    #org = usunCyfry(org)
-    #org = usunPolskieZnaki(org)
     odkodowany = usunZnaki(odkodowany)
-    print(org)
-    print(odkodowany)
+    #print(org)
+    #print(odkodowany)
     ilosc_znakow = len (org)
     zgodne_znaki = 0
     for i in range(ilosc_znakow):
@@ -60,17 +59,6 @@ def sprawdzenie_zgodnosci_tekstu():
         else:
             continue
     print(f"ilość znaków które się zgadzają: {zgodne_znaki} / {ilosc_znakow}")
-
-#sprawdzam_pl - tekst z polskimi znakami
-#sprawdzam_bezpl - tekst bez polskich znaków
-
-#koniec_pl - zakodowany tekst z polskimi znakami (kod Maćka)
-#koniec_bezpl - zakodowany tekst bez polskich znaków
-
-#odkodowane_pl - odkodowany tekst w którym NA POCZĄTKU BYŁY polskie znaki
-#odkodowane_bezpl - odkodowany tekst w którym nie było polskich znaków :)
-
-#WAŻNE!!!!! ODKODOWANY PLIK DO SPRAWDZENIA (CZY PL CZY BEZPL) NARAZIE TRZEBA ZMIENIC W FUNKCJI SPRAWDZANIE_ZGODNOSCI_TEKSTU
 
 
 def odkodowanie():
@@ -99,7 +87,6 @@ def odkodowanie():
             odkodowany_tekst+=znakiDeMale[(znakiDeMale.index(i)-klucz)%len(znakiDeMale)]
         elif i in znakiDeDuze:
             odkodowany_tekst+=znakiDeDuze[(znakiDeDuze.index(i)-klucz)%len(znakiDeDuze)]
-            
         elif i.isdigit():
             odkodowany_tekst += str((int(i) - klucz) % 10)
             
@@ -107,25 +94,14 @@ def odkodowanie():
             odkodowany_tekst+=chr(ord('가')+(ord(i) - ord('가') -klucz) % (ord('힣') - ord('가') + 1))
         elif 'ㄱ' <= i <= 'ㅣ':
             odkodowany_tekst+=chr(ord('ㄱ')+(ord(i) - ord('ㄱ') - klucz) % (ord('ㅣ') - ord('ㄱ') + 1))
-        
-        
+
+            
         else:
             odkodowany_tekst+=i
-    zapisPliku(odkodowany_tekst)
-    sprawdzenie_zgodnosci_tekstu()
+    nazwaPliku=input("Podaj nazwe pliku do zapisu (bez .txt): \nNazwa pliku: ")
+    zapisPliku(odkodowany_tekst, nazwaPliku)
+    sprawdzenie_zgodnosci_tekstu(nazwaPliku)
 
 
 
 odkodowanie()
-
-
-
-
-
-
-
-
-
-
-
-
