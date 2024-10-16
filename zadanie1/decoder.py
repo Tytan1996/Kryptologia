@@ -21,15 +21,15 @@ def wczytajPlik(nazwaPliku):   #funkcja Maćka
     except:
         print("Nie istnieje plik, podaj poprawna nazwe.")
         
-de=wczytajPlik('sprawdzam_de')
+
 
 def letterFreq(tekst, top):
     litery=list(filter(lambda x: x.isalpha(), list(tekst.lower())))
     return pd.Series(litery).value_counts()[0:top]
 
-print(letterFreq(de, 12))
 
-def angielski(tekst, top=7):
+
+def angielski(tekst, top=7, klucz=None):
     lista=['e', 't', 'a', 'o', 'n', 'i', 's', 'h','r',
           'd', 'l', 'f', 'c', 'm', 'u', 'g', 'y', 'p',
           'w', 'b', 'v', 'k', 'j', 'x', 'z', 'q'][0:top]
@@ -38,6 +38,10 @@ def angielski(tekst, top=7):
     
     
     shift=(ord(freq.index[0])-ord(lista[0]))%26
+    if shift==klucz:
+        print('Najczęstsza')
+        return shift
+    
     for i in range(0,top):
         if shift!= (ord(freq.index[i])-ord(lista[i]))%26:
             shift=None
@@ -55,6 +59,8 @@ def angielski(tekst, top=7):
     for i in range(0, len(lista)-1):
         if (ord(lista[i])-ord(lista[i+1]))%26!=(ord(lista2[i+j])-ord(lista2[i+j+1]))%26:
             j+=1
+        elif (ord(lista2[i+j])-ord(lista[i]))%26==klucz:
+            return (ord(lista2[i+j])-ord(lista[i]))%26
         
     
     lista2=lista2[j:j+top]
@@ -63,45 +69,9 @@ def angielski(tekst, top=7):
         
     return shift
  
-    
-def polski(tekst, top=7):
-    lista=['a', 'i', 'o', 'e', 'z', 'n', 'r',
-           'w', 's', 't', 'c', 'y', 'k', 'd',
-           'p', 'm', 'u', 'j', 'l', 'ł', 'b',
-           'g', 'ę', 'h', 'ą', 'ó', 'ż', 'ś',
-           'ć', 'f', 'ń', 'q', 'ź', 'v', 'x'][0:top]
-    
-    freq=letterFreq(tekst, top)
-    
-    
-    shift=(ord(freq.index[0])-ord(lista[0]))%len(lista)
-    for i in range(0,top):
-        if shift!= (ord(freq.index[i])-ord(lista[i]))%len(lista):
-            shift=None
-            break
-        
-    if shift!=None:
-        return shift
-    
-    lista=sorted(lista)
-    
-    lista2=sorted(freq.index)*2
-    
-    
-    j=0
-    for i in range(0, len(lista)-1):
-        if (ord(lista[i])-ord(lista[i+1]))%26!=(ord(lista2[i+j])-ord(lista2[i+j+1]))%26:
-            j+=1
-        
-    
-    lista2=lista2[j:j+top]
-    
-    shift=(ord(lista2[0])-ord(lista[0]))%26
-        
-    return shift 
-    
 
-def polski(tekst, top=7):
+
+def polski(tekst, top=7, klucz=None):
     lista=['a', 'i', 'o', 'e', 'z', 'n', 'r',
            'w', 's', 't', 'c', 'y', 'k', 'd',
            'p', 'm', 'u', 'j', 'l', 'ł', 'b',
@@ -112,6 +82,11 @@ def polski(tekst, top=7):
     
     
     shift=(ord(freq.index[0])-ord(lista[0]))%26
+    
+    if shift==klucz:
+        print('Najczęstsza')
+        return shift
+    
     for i in range(0,top):
         if shift!= (ord(freq.index[i])-ord(lista[i]))%26:
             shift=None
@@ -129,6 +104,8 @@ def polski(tekst, top=7):
     for i in range(0, len(lista)-1):
         if (ord(lista[i])-ord(lista[i+1]))%26!=(ord(lista2[i+j])-ord(lista2[i+j+1]))%26:
             j+=1
+        elif (ord(lista2[i+j])-ord(lista[i]))%26==klucz:
+            return (ord(lista2[i+j])-ord(lista[i]))%26
         
     
     lista2=lista2[j:j+top]
@@ -138,7 +115,7 @@ def polski(tekst, top=7):
     return shift 
 
 
-def niemiecki(tekst, top=2):
+def niemiecki(tekst, top=8, klucz=None):
     lista=['e', 'n', 'i', 's', 'r', 'a', 't',
            'd', 'h', 'u', 'l', 'c', 'g', 'm',
            'o', 'b', 'w', 'f', 'k', 'z', 'v',
@@ -147,10 +124,17 @@ def niemiecki(tekst, top=2):
     
     freq=letterFreq(tekst, top)
     
+    print(freq)
     
-    shift=(ord(freq.index[0])-ord(lista[0]))%len(lista)
+    shift=(ord(freq.index[0])-ord(lista[0]))%26
+    
+    
+    if shift==klucz:
+        print('Najczęstsza')
+        return shift
+    
     for i in range(0,top):
-        if shift!= (ord(freq.index[i])-ord(lista[i]))%len(lista):
+        if shift!= (ord(freq.index[i])-ord(lista[i]))%26:
             shift=None
             break
         
@@ -166,12 +150,13 @@ def niemiecki(tekst, top=2):
     for i in range(0, len(lista)-1):
         if (ord(lista[i])-ord(lista[i+1]))%26!=(ord(lista2[i+j])-ord(lista2[i+j+1]))%26:
             j+=1
-        
+        elif (ord(lista2[i+j])-ord(lista[i]))%26==klucz:
+            return (ord(lista2[i+j])-ord(lista[i]))%26
     
     lista2=lista2[j:j+top]
     
     shift=(ord(lista2[0])-ord(lista[0]))%26
-        
+    
     return shift 
 
 #%%   
@@ -260,4 +245,18 @@ ax.legend(fontsize='small')
 
 plt.show()
 
+from time import time
+t1=time()
+angielski(ang2, klucz=15)
+t2=time()
+print(f'Angielski: {t2-t1} s')
 
+t1=time()
+polski(pl, klucz=15)
+t2=time()
+print(f'Polski: {t2-t1} s')
+
+t1=time()
+niemiecki(de, klucz=10)
+t2=time()
+print(f'Niemiecki: {t2-t1} s')
