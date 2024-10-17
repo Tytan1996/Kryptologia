@@ -23,7 +23,7 @@ def wczytajPlik(nazwaPliku):   #funkcja Maćka
         
 
 
-def letterFreq(tekst, top):
+def letterFreq(tekst, top=26):
     litery=list(filter(lambda x: x.isalpha(), list(tekst.lower())))
     return pd.Series(litery).value_counts()[0:top]
 
