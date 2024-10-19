@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
-
-
+import pandas as pd
+import re
+import os
 
 #%%
 
@@ -68,16 +69,21 @@ def stat(tekst,  alfabet, top=7):
 
 
 
-def wczytajPlik(nazwaPliku):   #funkcja Maćka
+def wczytajPlik(nazwaPliku):   # funkcja Maćka
     try:
-        Plik=open(nazwaPliku+".txt","r", encoding="utf-8")
-        tekst=Plik.read()
+        Plik = open(nazwaPliku + ".txt", "r", encoding="utf-8")
+        tekst = Plik.read()
         Plik.close()
         return tekst
-    except:
-        print("Nie istnieje plik, podaj poprawna nazwe.")
-        
-        
+    except FileNotFoundError:
+        print(f"Nie istnieje plik: {nazwaPliku}, podaj poprawną nazwę.")
+        return None 
+
+
+def zapisPliku(tekst,nazwa):
+    plik=open(nazwa+".txt",'w', encoding="utf-8")
+    plik.write(tekst)
+    plik.close()
         
         
 def odkodowanie(tekst, klucz):
@@ -85,39 +91,80 @@ def odkodowanie(tekst, klucz):
     alfabet_maly="abcdefghijklmnopqrstuvwxyz"
     odkodowany_tekst=""
 
-
-
     for i in tekst:
         if i in alfabet_maly:
             odkodowany_tekst+=alfabet_maly[(alfabet_maly.index(i)-klucz)%len(alfabet_maly)]
         
         elif i.isdigit():
             odkodowany_tekst += str((int(i) - klucz) % 10)
-
-        
+     
     return odkodowany_tekst
 
 
-        
-        
-p1=wczytajPlik('zaszyfrowane\\5')
 
+def dekodowanie():
+    nazwapliku = input("Podaj nazwę pliku dla którego chcesz odgadnąć klucz: ")
+    sciezka = os.path.join('zaszyfrowane', nazwapliku)
+    tekst = wczytajPlik(sciezka)
+    for i in range(1,8):
+        klucz1= stat(tekst,angielski, i)
+        print(klucz1)
+        klucz2 =stat(tekst,polski, i)
+        print(klucz2)
+        ang=''.join(odkodowanie(tekst, klucz1).split())
+        print(ang[:50])
+        pl=''.join(odkodowanie(tekst, klucz2).split())
+        print(pl[:50])
+        #dla angielskiego sprawdzamy 'the'
+        #dla polskiego sprawdzamy 'prz'
+        zliczenie_ang = len(re.findall('the', ang))
+        print("zliczenie ang")
+        print(zliczenie_ang)
+        zliczenie_pl = len(re.findall('prz', pl))
+        print("zliczenie pl")
+        print(zliczenie_pl)
+        if zliczenie_ang > zliczenie_pl:
+            print("Treść tekstu jest w języku angielskim")
+            zapisPliku(ang, nazwapliku+"decoded.txt")
+            print(ang[:100])
+            break
+        elif zliczenie_pl > zliczenie_ang:
+            print("Treść tekstu jest w języku polskim")
+            zapisPliku(pl, nazwapliku+"decoded.txt")
+            print(pl[:100])
+            break
+        elif zliczenie_pl == zliczenie_ang:
+            zliczenie_pl2 = len(re.findall('szcz', pl))
+            if zliczenie_ang > zliczenie_pl:
+                print("Treść tekstu jest w języku angielskim")
+                zapisPliku(ang, nazwapliku+"decoded.txt")
+                print(ang[:100])
+                break
+            elif zliczenie_pl > zliczenie_ang:
+                print("Treść tekstu jest w języku polskim")
+                zapisPliku(pl, nazwapliku +"decoded.txt")
+                print(pl[:100])
+                break
+        elif zliczenie_pl == 0  and zliczenie_ang == 0:
+            i+=1
+    
+dekodowanie()
 
+#p1=wczytajPlik('zaszyfrowane\\5')
 
-#p1=''
+#klucz1= stat(p1,angielski, 1)
+#print("klucz1")
+#print(klucz1)
+#klucz2 =stat(p1,polski, 1)
+#print("klucz2")
+#print(klucz2)
 
-klucz1= stat(p1,angielski, 1)
-klucz2 =stat(p1,polski, 1)
+#ang=''.join(odkodowanie(p1, klucz1).split())
 
+#pl=''.join(odkodowanie(p1, klucz2).split())
 
-
-
-ang=''.join(odkodowanie(p1, klucz1).split())
-
-pl=''.join(odkodowanie(p1, klucz2).split())
-
-print('the', len(re.findall('the', ang)))
-print('prz', len(re.findall('prz', pl)))
-print('szcz', len(re.findall('szcz', pl)))
+#print('the', len(re.findall('the', ang)))
+#print('prz', len(re.findall('prz', pl)))
+#print('szcz', len(re.findall('szcz', pl)))
 
 
