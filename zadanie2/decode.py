@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import regex as re
 import numpy as np
-import pandas as pd
 
-import matplotlib.pyplot as plt
+
 
 #%%
 
