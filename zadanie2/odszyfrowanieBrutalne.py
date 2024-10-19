@@ -19,7 +19,7 @@ def odszyfrowanieBrutalne(tekst):
             znalezono=doSprawdzenia.find(angielskie[i])
             if znalezono==True:
                 zapisPliku(odkodowany,"odszyfrowane")
-        zapisPliku(doSprawdzenia,"gotowe\\"+str(klucz))
+        zapisPliku(odkodowany,"gotowe\\"+str(klucz))
         odkodowany=""
     return odkodowany
 def wczytajPlik(nazwaPliku):
