@@ -83,12 +83,8 @@ def wczytajPlik(nazwaPliku):   #funkcja Maćka
         
         
 def odkodowanie(tekst, klucz):
+    tekst=tekst.lower()
     alfabet_maly="abcdefghijklmnopqrstuvwxyz"
-    alfabet_duzy="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    znakiPlMale="ąćęłńóśżź"
-    znakiPlDuze="ĄĆĘŁŃÓŚŻŹ"
-    znakiDeMale="äüöß"
-    znakiDeDuze="ÄÜÖ"
     odkodowany_tekst=""
 
 
@@ -96,36 +92,34 @@ def odkodowanie(tekst, klucz):
     for i in tekst:
         if i in alfabet_maly:
             odkodowany_tekst+=alfabet_maly[(alfabet_maly.index(i)-klucz)%len(alfabet_maly)]
-        elif i in alfabet_duzy:
-            odkodowany_tekst+=alfabet_duzy[(alfabet_duzy.index(i)-klucz)%len(alfabet_duzy)]
-        elif i in znakiPlMale:
-            odkodowany_tekst+=znakiPlMale[(znakiPlMale.index(i)-klucz)%len(znakiPlMale)]
-        elif i in znakiPlDuze:
-            odkodowany_tekst+=znakiPlDuze[(znakiPlDuze.index(i)-klucz)%len(znakiPlDuze)]
-        elif i in znakiDeMale:
-            odkodowany_tekst+=znakiDeMale[(znakiDeMale.index(i)-klucz)%len(znakiDeMale)]
-        elif i in znakiDeDuze:
-            odkodowany_tekst+=znakiDeDuze[(znakiDeDuze.index(i)-klucz)%len(znakiDeDuze)]
+        
         elif i.isdigit():
             odkodowany_tekst += str((int(i) - klucz) % 10)
 
-            
-        else:
-            odkodowany_tekst+=i
         
     return odkodowany_tekst
 
 
+        
+        
+p1=wczytajPlik('zaszyfrowane\\5')
 
-        
-        
-p1=wczytajPlik('zaszyfrowane\\6')
+
+
+#p1=''
 
 klucz1= stat(p1,angielski, 1)
 klucz2 =stat(p1,polski, 1)
 
 
-print(odkodowanie(p1, klucz1)[:50])
-print()
-print(odkodowanie(p1, klucz2)[:50])
+
+
+ang=''.join(odkodowanie(p1, klucz1).split())
+
+pl=''.join(odkodowanie(p1, klucz2).split())
+
+print('the', len(re.findall('the', ang)))
+print('prz', len(re.findall('prz', pl)))
+print('szcz', len(re.findall('szcz', pl)))
+
 
