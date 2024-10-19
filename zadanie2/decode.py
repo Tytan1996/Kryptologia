@@ -69,17 +69,6 @@ def stat(tekst,  alfabet, top=7):
 
 
 
-def wczytajPlik(nazwaPliku):   # funkcja Maćka
-    try:
-        Plik = open(nazwaPliku + ".txt", "r", encoding="utf-8")
-        tekst = Plik.read()
-        Plik.close()
-        return tekst
-    except FileNotFoundError:
-        print(f"Nie istnieje plik: {nazwaPliku}, podaj poprawną nazwę.")
-        return None 
-
-
 def zapisPliku(tekst,nazwa):
     plik=open(nazwa+".txt",'w', encoding="utf-8")
     plik.write(tekst)
@@ -106,7 +95,7 @@ def dekodowanie():
     nazwapliku = input("Podaj nazwę pliku dla którego chcesz odgadnąć klucz: ")
     sciezka = os.path.join('zaszyfrowane', nazwapliku)
     tekst = wczytajPlik(sciezka)
-    for i in range(1,8):
+    for i in range(5,10):
         klucz1= stat(tekst,angielski, i)
         print(klucz1)
         klucz2 =stat(tekst,polski, i)
@@ -147,6 +136,8 @@ def dekodowanie():
                 break
         elif zliczenie_pl == 0  and zliczenie_ang == 0:
             i+=1
+
+    #dodac wykres 
     
 dekodowanie()
 
