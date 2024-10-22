@@ -45,8 +45,8 @@ def stat(tekst,  alfabet, top=7):
                 shift=None
                 break
     except IndexError:
-        print("Brak liter w tekście lub tekst jest za krótki. Nie można odnaleźć klucza")
         shift=None
+        raise IndexError("Brak liter w tekście lub tekst jest za krótki. Nie można odnaleźć klucza")
 
     else:
         if shift!=None:
@@ -102,10 +102,14 @@ def dekodowanie():
     sciezka = os.path.join('zaszyfrowane', nazwapliku)
     tekst = wczytajPlik(sciezka)
     for i in range(5,10):
+     try:
         klucz1= stat(tekst,angielski, i)
         print(klucz1)
         klucz2 =stat(tekst,polski, i)
         print(klucz2)
+     except IndexError as e:
+        print(e)
+     else:
         ang=''.join(odkodowanie(tekst, klucz1).split())
         print(ang[:50])
         pl=''.join(odkodowanie(tekst, klucz2).split())
