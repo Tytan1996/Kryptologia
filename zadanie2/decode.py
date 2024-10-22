@@ -19,7 +19,7 @@ def wczytajPlik(nazwaPliku):
 
 
 def letterFreq(tekst, top):
-    litery=list(filter(lambda x: x.isalpha(), list(tekst.lower())))
+    litery=list(filter(lambda x: x.isalpha(), list(str(tekst).lower())))
     return pd.Series(litery).value_counts()[0:top]
 
 
@@ -38,30 +38,36 @@ def stat(tekst,  alfabet, top=7):
     
     freq=letterFreq(tekst, top)
     
+    try:
+        shift=(ord(freq.index[0])-ord(lista[0]))%26
+        for i in range(1,top):
+            if shift!= (ord(freq.index[i])-ord(lista[i]))%26:
+                shift=None
+                break
+    except IndexError:
+        shift=None
+        raise IndexError("Brak liter w tekście lub tekst jest za krótki. Nie można odnaleźć klucza")
+
+    else:
+        if shift!=None:
+            return shift
     
-    shift=(ord(freq.index[0])-ord(lista[0]))%26
+        lista=sorted(lista)
     
-    for i in range(0,top):
-        if shift!= (ord(freq.index[i])-ord(lista[i]))%26:
-            shift=None
-            break
+        lista2=sorted(freq.index)*2
+    
+        try:
+            j=0
+            for i in range(0, len(lista)-1):
+                if (ord(lista[i])-ord(lista[i+1]))%26!=(ord(lista2[i+j])-ord(lista2[i+j+1]))%26:
+                    j+=1
+        except IndexError:
+            shift = None
+            raise IndexError("Tekst jest za krótki. Nie można odnaleźć klucza")
+        else:
+            lista2=lista2[j:j+top]
         
-    if shift!=None:
-        return shift
-    
-    lista=sorted(lista)
-    
-    lista2=sorted(freq.index)*2
-    
-    
-    j=0
-    for i in range(0, len(lista)-1):
-        if (ord(lista[i])-ord(lista[i+1]))%26!=(ord(lista2[i+j])-ord(lista2[i+j+1]))%26:
-            j+=1
-        
-    lista2=lista2[j:j+top]
-    
-    shift=(ord(lista2[0])-ord(lista[0]))%26
+            shift=(ord(lista2[0])-ord(lista[0]))%26
         
     return shift
  
@@ -76,18 +82,24 @@ def zapisPliku(tekst,nazwa):
         
         
 def odkodowanie(tekst, klucz):
-    tekst=tekst.lower()
-    alfabet_maly="abcdefghijklmnopqrstuvwxyz"
-    odkodowany_tekst=""
-
-    for i in tekst:
-        if i in alfabet_maly:
-            odkodowany_tekst+=alfabet_maly[(alfabet_maly.index(i)-klucz)%len(alfabet_maly)]
-        
-        elif i.isdigit():
-            odkodowany_tekst += str((int(i) - klucz) % 10)
-     
-    return odkodowany_tekst
+    try:
+        klucz=int(klucz)
+    except (ValueError, TypeError) as e:
+        raise ValueError('Klucz powinien być liczbą całkowitą!')
+        return
+    else:
+        tekst=str(tekst).lower()
+        alfabet_maly="abcdefghijklmnopqrstuvwxyz"
+        odkodowany_tekst=""
+    
+        for i in tekst:
+            if i in alfabet_maly:
+                odkodowany_tekst+=alfabet_maly[(alfabet_maly.index(i)-klucz)%len(alfabet_maly)]
+            
+            elif i.isdigit():
+                odkodowany_tekst += str((int(i) - klucz) % 10)
+         
+        return odkodowany_tekst
 
 
 
@@ -96,10 +108,15 @@ def dekodowanie():
     sciezka = os.path.join('zaszyfrowane', nazwapliku)
     tekst = wczytajPlik(sciezka)
     for i in range(5,10):
+     try:
         klucz1= stat(tekst,angielski, i)
         print(klucz1)
         klucz2 =stat(tekst,polski, i)
         print(klucz2)
+     except IndexError as e:
+        print(e)
+        return
+     else:
         ang=''.join(odkodowanie(tekst, klucz1).split())
         print(ang[:50])
         pl=''.join(odkodowanie(tekst, klucz2).split())
@@ -114,24 +131,24 @@ def dekodowanie():
         print(zliczenie_pl)
         if zliczenie_ang > zliczenie_pl:
             print("Treść tekstu jest w języku angielskim")
-            zapisPliku(ang, nazwapliku+"decoded.txt")
+            zapisPliku(ang, 'odszyfrowane/'+nazwapliku+"decoded.txt")
             print(ang[:100])
             break
         elif zliczenie_pl > zliczenie_ang:
             print("Treść tekstu jest w języku polskim")
-            zapisPliku(pl, nazwapliku+"decoded.txt")
+            zapisPliku(pl, 'odszyfrowane/'+nazwapliku+"decoded.txt")
             print(pl[:100])
             break
         elif zliczenie_pl == zliczenie_ang:
             zliczenie_pl2 = len(re.findall('szcz', pl))
             if zliczenie_ang > zliczenie_pl:
                 print("Treść tekstu jest w języku angielskim")
-                zapisPliku(ang, nazwapliku+"decoded.txt")
+                zapisPliku(ang, 'odszyfrowane/'+nazwapliku+"decoded.txt")
                 print(ang[:100])
                 break
             elif zliczenie_pl > zliczenie_ang:
                 print("Treść tekstu jest w języku polskim")
-                zapisPliku(pl, nazwapliku +"decoded.txt")
+                zapisPliku(pl, 'odszyfrowane/'+nazwapliku +"decoded.txt")
                 print(pl[:100])
                 break
         elif zliczenie_pl == 0  and zliczenie_ang == 0:
