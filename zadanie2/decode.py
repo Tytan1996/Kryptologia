@@ -4,6 +4,8 @@ import numpy as np
 import pandas as pd
 import re
 import os
+import time
+import matplotlib.pyplot as plt 
 
 #%%
 
@@ -101,78 +103,100 @@ def odkodowanie(tekst, klucz):
          
         return odkodowany_tekst
 
-
-
 def dekodowanie():
     nazwapliku = input("Podaj nazwę pliku dla którego chcesz odgadnąć klucz: ")
     sciezka = os.path.join('zaszyfrowane', nazwapliku)
     tekst = wczytajPlik(sciezka)
+    start = time.time()
     for i in range(5,10):
      try:
         klucz1= stat(tekst,angielski, i)
-        print(klucz1)
         klucz2 =stat(tekst,polski, i)
-        print(klucz2)
      except IndexError as e:
         print(e)
         return
      else:
         ang=''.join(odkodowanie(tekst, klucz1).split())
-        print(ang[:50])
         pl=''.join(odkodowanie(tekst, klucz2).split())
-        print(pl[:50])
         #dla angielskiego sprawdzamy 'the'
         #dla polskiego sprawdzamy 'prz'
         zliczenie_ang = len(re.findall('the', ang))
-        print("zliczenie ang")
-        print(zliczenie_ang)
         zliczenie_pl = len(re.findall('prz', pl))
-        print("zliczenie pl")
-        print(zliczenie_pl)
         if zliczenie_ang > zliczenie_pl:
-            print("Treść tekstu jest w języku angielskim")
             zapisPliku(ang, 'odszyfrowane/'+nazwapliku+"decoded.txt")
-            print(ang[:100])
-            break
+            end = time.time()
+            return end - start, i
         elif zliczenie_pl > zliczenie_ang:
-            print("Treść tekstu jest w języku polskim")
             zapisPliku(pl, 'odszyfrowane/'+nazwapliku+"decoded.txt")
-            print(pl[:100])
-            break
+            end = time.time()
+            return end - start, i
         elif zliczenie_pl == zliczenie_ang:
             zliczenie_pl2 = len(re.findall('szcz', pl))
-            if zliczenie_ang > zliczenie_pl:
-                print("Treść tekstu jest w języku angielskim")
+            if zliczenie_ang > zliczenie_pl2:
                 zapisPliku(ang, 'odszyfrowane/'+nazwapliku+"decoded.txt")
-                print(ang[:100])
-                break
-            elif zliczenie_pl > zliczenie_ang:
-                print("Treść tekstu jest w języku polskim")
+                end = time.time()
+                return end - start, i
+            elif zliczenie_pl2 > zliczenie_ang:
                 zapisPliku(pl, 'odszyfrowane/'+nazwapliku +"decoded.txt")
-                print(pl[:100])
-                break
+                end = time.time()
+                return end - start, i
         elif zliczenie_pl == 0  and zliczenie_ang == 0:
             i+=1
+ 
 
-    #dodac wykres 
+
     
 dekodowanie()
 
-#p1=wczytajPlik('zaszyfrowane\\5')
+def sredni_czas_iteracja(liczbaiteracji):
+    czas=[]
+    iteracja=[]
+    nazwapliku = input("Podaj nazwę pliku: ")
 
-#klucz1= stat(p1,angielski, 1)
-#print("klucz1")
-#print(klucz1)
-#klucz2 =stat(p1,polski, 1)
-#print("klucz2")
-#print(klucz2)
+    for i in range(liczbaiteracji):
+        c,it = dekodowanie(nazwapliku)
+        #print(c)
+        #print(it)
+        if c is not None and it is not None:
 
-#ang=''.join(odkodowanie(p1, klucz1).split())
+            czas.append(c)
+            iteracja.append(it)
 
-#pl=''.join(odkodowanie(p1, klucz2).split())
+    sredni_czas = sum(czas)/liczbaiteracji
+    srednia_iteracja = sum(iteracja)/liczbaiteracji
 
-#print('the', len(re.findall('the', ang)))
-#print('prz', len(re.findall('prz', pl)))
-#print('szcz', len(re.findall('szcz', pl)))
+    #return sredni_czas, srednia_iteracja
+    print("sredni czas:", sredni_czas)
+    print("srednia iteracja:", srednia_iteracja)
+
+
+#sredni_czas_iteracja(50)
+
+
+czas=[0.02971471309661865, 0.0503673791885376, 0.10554842948913574, 0.014775562286376952, 0.09075160026550293, 0.035639681816101075, 0.13189016819000243, 0.3842524814605713]
+ilosc_liter=[5, 5, 6, 5, 5, 5, 5, 6]
+teksty=[1,2,3,4,5,6,7,8]
+
+"""
+plt.plot(teksty, czas)
+#tu fajnie byłoby dodać drugą linie z czasem dla atau brutelnego dla każdego pliku
+plt.title('Średni czas odszyfrowania plików \n (średnia z 50 prób)')
+plt.xlabel('dany tekst')
+plt.ylabel('czas')
+plt.show()
+"""
+'''
+#czy taki wykres jest ok?
+plt.bar(teksty, ilosc_liter, color='skyblue')
+plt.title("Ilość potrzebnych liter do porównania do odszyfrowania tekstu")
+plt.xlabel('Dany tekst')
+plt.ylabel('Ilość liter')
+plt.xticks(teksty)
+plt.show()
+'''
+
+
+
+
 
 
