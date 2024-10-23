@@ -41,11 +41,15 @@ def Main():
     czasy=[]
     for i in range(1,9):
         tekst=wczytajPlik("zaszyfrowane\\"+str(i))
-        poczatek = time.time()
-        odszyfrowanieBrutalne(tekst,i)
-        koniec = time.time()
-        czas=koniec-poczatek
+        suma=0
+        for j in range(0,50):
+            poczatek = time.time()
+            odszyfrowanieBrutalne(tekst,i)
+            koniec = time.time()
+            suma+=(koniec-poczatek)
+        czas=suma/50
         czasy.append(czas)
+        suma=0
     print("koniec")
     return czasy
 Main()
