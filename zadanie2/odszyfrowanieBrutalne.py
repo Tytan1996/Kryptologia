@@ -28,8 +28,8 @@ def wczytajPlik(nazwaPliku):
         tekst=Plik.read()
         Plik.close()
         return tekst
-    except:
-        print("Nie istnieje plik, podaj poprawna nazwe.")
+    except FileNotFoundError:
+        raise FileNotFoundError(f"Nie istnieje plik {nazwaPliku}.txt, podaj poprawna nazwe.")
 polskie=["jeszcze","kiedy","teraz","prawda"]
 angielskie=["about","because", "become", "begin",
             "between"]
@@ -40,7 +40,11 @@ def zapisPliku(tekst,nazwa):
 def Main():
     czasy=[]
     for i in range(1,9):
-        tekst=wczytajPlik("zaszyfrowane\\"+str(i))
+        try:
+            tekst=wczytajPlik("zaszyfrowane\\"+str(i))
+        except FileNotFoundError as e:
+            print(e)
+            return
         suma=0
         for j in range(0,50):
             poczatek = time.time()

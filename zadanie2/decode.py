@@ -15,8 +15,8 @@ def wczytajPlik(nazwaPliku):
         tekst=Plik.read()
         Plik.close()
         return tekst
-    except:
-        print("Nie istnieje plik, podaj poprawna nazwe.")
+    except FileNotFoundError:
+        raise FileNotFoundError(f"Nie istnieje plik {nazwaPliku}.txt, podaj poprawna nazwe.")
         
 
 
@@ -53,9 +53,11 @@ def stat(tekst,  alfabet, top=7):
     else:
         if shift!=None:
             return shift
-    
+        if top>12:
+            lista=lista[0:7]
+            freq=freq[0:7]
+
         lista=sorted(lista)
-    
         lista2=sorted(freq.index)*2
     
         try:
@@ -105,8 +107,12 @@ def odkodowanie(tekst, klucz):
 
 def dekodowanie():
     nazwapliku = input("Podaj nazwę pliku dla którego chcesz odgadnąć klucz: ")
-    sciezka = os.path.join('zaszyfrowane', nazwapliku)
-    tekst = wczytajPlik(sciezka)
+    sciezka = os.path.join('zaszyfrowane/', nazwapliku)
+    try:
+        tekst = wczytajPlik(sciezka)
+    except FileNotFoundError as e:
+        print(e)
+        return
     start = time.time()
     for i in range(5,10):
      try:
