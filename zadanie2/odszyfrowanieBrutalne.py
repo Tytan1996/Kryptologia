@@ -46,6 +46,6 @@ def Main():
         koniec = time.time()
         czas=koniec-poczatek
         czasy.append(czas)
-        print(czas)
     print("koniec")
+    return czasy
 Main()
