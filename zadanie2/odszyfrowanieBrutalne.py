@@ -1,25 +1,25 @@
-def odszyfrowanieBrutalne(tekst):
+import time
+
+def odszyfrowanieBrutalne(tekst,numer):
     dlugoscTekstu=range(len(tekst))
     odkodowany=""
     doSprawdzenia=""
-    
+    tekst=tekst.lower()
     for klucz in range(1,26):
-        print(klucz)
         for i in dlugoscTekstu:
-            if tekst[i].isupper():
-                odkodowany+=chr((ord(tekst[i])-65+klucz)%26+65)
+            if tekst[i].islower():
+                odkodowany+=chr((ord(tekst[i])-97-klucz)%26+97)
             else:
                 odkodowany+=tekst[i]
         doSprawdzenia=odkodowany.replace(" ","")
         for i in range(len(polskie)):
-            znalezono=doSprawdzenia.find(polskie[i])
-            if znalezono==True:
-                zapisPliku(odkodowany,"polskie")
+            if polskie[i] in doSprawdzenia:
+                zapisPliku(odkodowany,"odszyfrowane/odszyfrowanePL_klucz"+str(klucz)+"_tekst"+str(numer))
+                return
         for i in range(len(angielskie)):
-            znalezono=doSprawdzenia.find(angielskie[i])
-            if znalezono==True:
-                zapisPliku(odkodowany,"odszyfrowane")
-        zapisPliku(odkodowany,"gotowe\\"+str(klucz))
+            if angielskie[i] in doSprawdzenia:
+                zapisPliku(odkodowany,"odszyfrowane/odszyfrowaneENG_klucz"+str(klucz)+"_tekst"+str(numer))
+                return
         odkodowany=""
     return odkodowany
 def wczytajPlik(nazwaPliku):
@@ -30,17 +30,22 @@ def wczytajPlik(nazwaPliku):
         return tekst
     except:
         print("Nie istnieje plik, podaj poprawna nazwe.")
-polskie=["byc","na","do", "ze","jak","ale","juz","jeszcze",
-         "moze", "kiedy", "pan"]
-angielskie=["the","be","have","about","after","all","also",
-            "and", "ask","back", "because", "become", "begin",
-            "between", "but", "come"]
+polskie=["jeszcze","kiedy","teraz","prawda"]
+angielskie=["about","because", "become", "begin",
+            "between"]
 def zapisPliku(tekst,nazwa):
     plik=open(nazwa+".txt",'w', encoding="utf-8")
     plik.write(tekst)
     plik.close()
 def Main():
-    tekst=wczytajPlik("zaszyfrowane\\2")
-    odszyfrowanieBrutalne(tekst)
+    czasy=[]
+    for i in range(1,9):
+        tekst=wczytajPlik("zaszyfrowane\\"+str(i))
+        poczatek = time.time()
+        odszyfrowanieBrutalne(tekst,i)
+        koniec = time.time()
+        czas=koniec-poczatek
+        czasy.append(czas)
+        print(czas)
     print("koniec")
 Main()

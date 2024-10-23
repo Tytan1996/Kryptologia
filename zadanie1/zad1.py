@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 import re
 
 def czyBedaLiczby():
@@ -54,9 +54,10 @@ def czyUsunacPolskieZnaki():
 def wczytajPlik():
     nazwa_pliku = input("Wprowadź nazwę pliku, bez .txt\nNazwa pliku: ")
     try:
-        with open(nazwa_pliku + ".txt", "r", encoding="utf-8") as plik:
+        with open(nazwa_pliku + ".txt", "r") as plik:
             tekst = plik.read()
-        
+            print(tekst)
+            zapisPliku(tekst)
         # Definiowanie wzorca do wyszukiwania
         wzorzec = r'Jezyk:\s*(\w+),\s*klucz\s*(\d+),\s*Polskie/Niemieckie\s*litery:\s*(True|False),\s*liczby:\s*(True|False),\s*małe\s*litery:\s*(True|False)'
         # Wyszukiwanie w tekście
