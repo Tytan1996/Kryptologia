@@ -180,17 +180,19 @@ def sredni_czas_iteracja(liczbaiteracji):
 
 
 czas=[0.02971471309661865, 0.0503673791885376, 0.10554842948913574, 0.014775562286376952, 0.09075160026550293, 0.035639681816101075, 0.13189016819000243, 0.3842524814605713]
-ilosc_liter=[5, 5, 6, 5, 5, 5, 5, 6]
+czasbrutalny=[0.12402385711669922, 0.059308009147644045, 0.1567399787902832, 0.07620126724243165, 0.06316526889801026, 0.17725858688354493, 0.13430472373962402, 0.23838133335113526]
+#ilosc_liter=[5, 5, 6, 5, 5, 5, 5, 6]
 teksty=[1,2,3,4,5,6,7,8]
 
-"""
-plt.plot(teksty, czas)
-#tu fajnie byłoby dodać drugą linie z czasem dla atau brutelnego dla każdego pliku
+'''
+plt.plot(teksty, czas, label = "atak statystyczny")
+plt.plot(teksty, czasbrutalny, label = "atak brutalny")
 plt.title('Średni czas odszyfrowania plików \n (średnia z 50 prób)')
-plt.xlabel('dany tekst')
+plt.xlabel('plik')
 plt.ylabel('czas')
+plt.legend()
 plt.show()
-"""
+'''
 '''
 #czy taki wykres jest ok?
 plt.bar(teksty, ilosc_liter, color='skyblue')
