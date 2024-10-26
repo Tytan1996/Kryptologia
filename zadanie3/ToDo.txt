@@ -1,0 +1,7 @@
+1. dłuższy plik
+2. porównanie statystyczne (od najczęściej do najrzadziej w dwóch językach)
+3. ang 6liter, pl 4litery < 1% częstotliwości 
+4. analizowanie zbitek tych samych liter | dla ang: (ss,ee,ff,ll,mm,oo) | dla pl: (ii, nn, (kk w lekko, Mekka, miękko; dd w Budda, oddaje; ss w ssać))
+5. zbitki dwu i trzy literowe często występujące
+
+3 i 4 do zgadnięcia 
