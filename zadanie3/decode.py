@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-import numpy as np
+#import numpy as np
 import pandas as pd
 import regex as re
-import os
+#import os
 import random
 
 #%%
@@ -49,11 +49,7 @@ litery=list(freq.keys())
 
 
 def zbitki(tekst):
-    dwa=[]
-    trzy=[]
-    cztery=[]
-    dl = {}
-    
+
     reg= re.compile(r"(.)\1\1")
     match = re.findall(reg, tekst)
     
@@ -135,7 +131,7 @@ for l in tekst:
     else:
         odszyfrowny+=l
     
-#print(odszyfrowny[0:1000])
+print(odszyfrowny[0:1000])
 
 def zapisPliku(tekst,nazwa, klucz):
     plik=open(nazwa+"_odszyfrowany.txt",'w', encoding="utf-8")
