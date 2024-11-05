@@ -1,13 +1,15 @@
 import nltk
-nltk.download('words')
+#nltk.download('words')
 
-from nltk.corpus import words
-word_list = words.words()
+#from nltk.corpus import words
+#word_list = words.words()
 
 import regex as re
 
 reg= re.compile(r"(.)\1")
 dl = {}
+
+word_list=['aaabb','abc','abbc']
 
 for word in word_list:
     match = re.search(reg, word)
