@@ -27,14 +27,13 @@ angielski=['e', 't', 'a', 'o', 'n', 'i', 's', 'h','r', # t h
            'd', 'l', 'f', 'c', 'm', 'u', 'g', 'y', 'p',
            'w', 'b', 'v', 'k', 'j', 'x', 'z', 'q']
 
-# Częstotliwości procentowe dla polskiego i angielskiego
 polski_freq_proc = {'a': 9.99, 'e': 9.05, 'o': 8.41, 'i': 8.29, 'z': 5.62}
 angielski_freq_proc = {'e': 12.7, 't': 9.1, 'a': 8.2, 'o': 7.5, 'i': 7}
 
 pl_trigrams = ['prz', 'nie', 'sie']
 ang_trigrams = ['the', 'and', 'tha', 'ent', 'ion', 'tio', 'for', 'nde']
 
-#skoro podejrzewam, że to angielski to dodam jeszcze najpopularniejsze dwójki i powtórki 
+
 ang_digraphs = ['th', 'er', 'on', 'an', 're', 'he', 'in', 'ed']
 ang_doubles = ['ss', 'ee', 'tt', 'ff', 'll', 'mm', 'oo']
 
@@ -70,7 +69,7 @@ def odkodowanie():
         print(top_5)
         print(polski_freq_proc)
 
-    trigram_counts = {} #słownik ze znalezionymi trojznakami 
+    trigram_counts = {} 
     for i in range(len(tekst) - 2):
         trigram = tekst[i:i+3]
         trigram_counts[trigram] = trigram_counts.get(trigram, 0) + 1
@@ -79,13 +78,13 @@ def odkodowanie():
 
     sorted_trigrams = sorted(repeated_trigrams, key=lambda x: x[1], reverse=True)
 
-    print('najczęsciej występujące trójki w tekscie: ', sorted_trigrams[:8])
+    print('najczęsciej występujące trójki w tekscie: ', sorted_trigrams[:10])
     if mniejsza_roznca_ang>mniejsza_roznca_pl:
         print('trojki angielskie: ', ang_trigrams)
     elif mniejsza_roznca_pl>mniejsza_roznca_ang:
         print('trojki polskie: ', pl_trigrams)
 
-    digram_counts = {} #słownik ze znalezionymi dwuznakami 
+    digram_counts = {} 
     for i in range(len(tekst) - 1):
         digram = tekst[i:i+2]
         digram_counts[digram] = digram_counts.get(digram, 0) + 1
@@ -94,10 +93,10 @@ def odkodowanie():
 
     sorted_digrams = sorted(repeated_digrams, key=lambda x: x[1], reverse=True)
 
-    print('najczęściej wystęujące dwójki w tekscie: ', sorted_digrams[:8])
+    print('najczęściej wystęujące dwójki w tekscie: ', sorted_digrams[:10])
     print('angielskie dwójki: ',ang_digraphs)
 
-    double_counts = {} #słownik ze znalezionymi dubletami 
+    double_counts = {} 
    
     for i in range(len(tekst) - 1):
         if tekst[i] == tekst[i + 1]:  
@@ -107,32 +106,16 @@ def odkodowanie():
     repeated_doubles = [(double, count) for double, count in double_counts.items() if count > 1]
     sorted_doubles = sorted(repeated_doubles, key=lambda x: x[1], reverse=True)
 
-    print('najczęściej występujące powtórzone znaki w tekście:', sorted_doubles[:8])
+    print('najczęściej występujące powtórzone znaki w tekście:', sorted_doubles[:10])
     print('angielskie powtórzenia:', ang_doubles)
 
-odkodowanie()
+#odkodowanie()
 
-# szyfr - odkodowana litera
-# A - e
-# M - t
-# W - a
-# X - o - prawdopodobnie
-# O - i - prawdopodobnie 
-# D - h
-#AY - podejrzewam ze to er bo jest tez YA co odpowiada re 
-# Y - r
-# jezeli y to r, to podejrzewam, że IEY to może byc 'for'
-# wtedy:
-# I - f
-# E - o    
-#po dubletach
-# N - s
-# H - l - prawdopodobnie
 
-odkodowane_litery={'A': 'e', 'M': 't', 'W': 'a', 'X': 'o', 'O': 'i', 'D': 'h', 'Y': 'r', 'I': 'f', 'E': 'o', 'N': 's', 'H': 'l'} 
+odkodowane_litery={'A': 'e', 'M': 't', 'X': 'o', 'D': 'h', 'Y': 'r', 'N': 's'} 
 
 def zapisPliku(tekstOdkodowany):
-    plik=open("tekst2_czesciowo_odkodowany.txt",'w', encoding="utf-8")
+    plik=open("tekst2_czesciowo_odkodowany_m.txt",'w', encoding="utf-8")
     plik.write(tekstOdkodowany)
     plik.close()
 
@@ -149,6 +132,4 @@ def czesciowe_odkodowanie():
 
 
 
-#czesciowe_odkodowanie()
-
-# tekscie jest dużo 'Je'
+czesciowe_odkodowanie()
