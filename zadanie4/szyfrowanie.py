@@ -21,8 +21,12 @@ def wczytajPlik(nazwa_pliku):
 
     
     
-def usunZnaki(tekst):
+def usunZnaki(tekst, spacje=True, liczby=True):
     symbole = " .,'!:;/@#$%^&(*)-_+=[{]}|?\n\"0123456789"
+    if not spacje:
+        symbole=symbole[1:]
+    if not liczby:
+        symbole=symbole[:-10]
     b=range(len(symbole))
     for i in b:
         tekst=tekst.replace(symbole[i],"")
@@ -65,6 +69,42 @@ def vigenere_cipher(tekst):
 
 
 
-vigenere_cipher("dozakodowania.txt")
+#vigenere_cipher("dozakodowania.txt")
 
 
+
+def vigenere_cipher2(tekst, znakiPL, spacje, liczby):
+    alfabet = "abcdefghijklmnopqrstuvwxyz"
+    wynik = ""
+    do_zakodowania, klucz = wczytajPlik(tekst)
+    
+    if znakiPL:
+        alfabet+="ąćęłńóśżź"
+    else:
+        do_zakodowania = usunPolskieZnaki(do_zakodowania)
+        klucz = usunPolskieZnaki(klucz.lower())
+    if spacje:
+        alfabet+=" "
+    if liczby:
+        alfabet+="0123456789"
+    do_zakodowania = usunZnaki(do_zakodowania, spacje= not spacje, liczby= not liczby)
+    print(do_zakodowania)
+    #print(alfabet)
+    
+
+    for i in range(len(do_zakodowania)):
+        litera_idx = alfabet.index(do_zakodowania[i].lower())
+        #print(litera_idx)
+        #indeks_klucza= alfabet.index(len(do_zakodowania[:i])%len(klucz))
+        indeks_klucza = alfabet.index(klucz[i % len(klucz)])
+        #print(indeks_klucza)
+        nowa_litera_idx = (litera_idx + indeks_klucza) % len(alfabet)
+        nowa_litera = alfabet[nowa_litera_idx]
+        wynik += nowa_litera
+    
+    #zapisPliku(wynik)
+    return wynik
+    
+
+
+print(vigenere_cipher2("dozakodowania.txt", 0,1,1))

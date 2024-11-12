@@ -25,26 +25,40 @@ def usunPolskieZnaki(tekst):
     return tekst
 
 
-def vigenere_decipher(plik, klucz):
+def vigenere_decipher(plik, klucz, kod=None):
     alfabet = "abcdefghijklmnopqrstuvwxyz"
+    znakiPl="ąćęłńóśżź"
     wynik = ""
+    klucz=klucz.lower()
     tekst=wczytajPlik(plik)
+    if not kod:
+        kod=''
+        for i in [any((True for x in znakiPl if x in tekst)), ' ' in tekst, any(x.isdigit() for x in tekst)]:
+            if i:
+                kod+='1'
+            else:
+                kod+='0'
+     
+    lista=[znakiPl, ' ', '0123456789']
+    kod=str(kod).rjust(3,'0')
+    for i in range(3):
+        if int(kod[i]):
+            alfabet+=lista[i]
     
-    klucz = usunPolskieZnaki(klucz.lower())
-
+    if not int(kod[i]):
+        klucz=usunPolskieZnaki(klucz)
     for i in range(len(tekst)):
         litera_idx = alfabet.index(tekst[i])
         klucz_idx = alfabet.index(klucz[i % len(klucz)])
         #print(indeks_klucza)
         litera = alfabet[(litera_idx - klucz_idx) % len(alfabet)]
         wynik += litera
-        if (i%10==0):
-            print(tekst[i], litera_idx, klucz_idx, litera)
 
     return(wynik)
     
 
 
 
-wynik=vigenere_decipher("zakodowane", 'tajnehaslo')
-zapisPliku(wynik, 'odkodowane')
+wynik=vigenere_decipher("zakodowane2", 'tajnehaslo',11)
+print(wynik)
+zapisPliku(wynik, 'odkodowane2')
