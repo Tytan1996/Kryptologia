@@ -39,8 +39,8 @@ def usunPolskieZnaki(tekst):
         tekst=tekst.replace(znakiPl[i],znaki[i])
     return tekst
 
-def zapisPliku(tekstSzyfrowany):
-    plik=open("zakodowane.txt",'w', encoding="utf-8")
+def zapisPliku(tekstSzyfrowany, nazwa):
+    plik=open(f"{nazwa}.txt",'w', encoding="utf-8")
     plik.write(tekstSzyfrowany)
     plik.close()
 
@@ -65,7 +65,7 @@ def vigenere_cipher(tekst):
         nowa_litera = alfabet[nowa_litera_idx]
         wynik += nowa_litera
 
-    zapisPliku(wynik)
+    zapisPliku(wynik, 'zakodowane')
 
 
 
@@ -102,7 +102,7 @@ def vigenere_cipher2(tekst, znakiPL, spacje, liczby):
         nowa_litera = alfabet[nowa_litera_idx]
         wynik += nowa_litera
     
-    #zapisPliku(wynik)
+    zapisPliku(wynik, 'zakodowane2')
     return wynik
     
 
