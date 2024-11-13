@@ -21,6 +21,7 @@ def wczytajPlik(nazwa_pliku):
             return tekst
     except FileNotFoundError:
         print("Nie istnieje plik, podaj poprawną nazwę.")
+        raise FileNotFoundError()
     
     
 def usunZnaki(tekst, spacje=True, liczby=True):
