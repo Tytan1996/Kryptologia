@@ -4,11 +4,13 @@ import time
 import re
 
 def wczytajPlik(nazwa_pliku):
-    with open(nazwa_pliku + '.txt', "r", encoding="utf-8") as plik:
-        tekst = plik.read()
-        #print(tekst)
-        return tekst
-
+    try:
+        with open(nazwa_pliku + '.txt', "r", encoding="utf-8") as plik:
+            tekst = plik.read()
+            #print(tekst)
+            return tekst
+    except FileNotFoundError:
+        print("Nie istnieje plik, podaj poprawną nazwę.")
 
 def zapisPliku(tekstSzyfrowany, nazwa):
     plik=open(nazwa+".txt",'w', encoding="utf-8")
