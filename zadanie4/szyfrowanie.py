@@ -4,21 +4,23 @@ import time
 import re
 
 def wczytajPlik(nazwa_pliku):
-    with open(nazwa_pliku, "r", encoding="utf-8") as plik:
-        tekst = plik.read()
-        #print(tekst)
-        
-    wiersze = tekst.splitlines()
-
-    if wiersze and wiersze[0].startswith("klucz "):
-        klucz = wiersze[0].split()[1]
-        wiersze.pop(0)
-        tekst = "\n".join(wiersze)  # Połącz pozostałe wiersze
-        return tekst, klucz
-    else:
-        print("Nie znaleziono danych do kodowania tekstu lub są źle napisane.")
-        return tekst
-
+    try:
+        with open(nazwa_pliku, "r", encoding="utf-8") as plik:
+            tekst = plik.read()
+            #print(tekst)
+            
+        wiersze = tekst.splitlines()
+    
+        if wiersze and wiersze[0].startswith("klucz "):
+            klucz = wiersze[0].split()[1]
+            wiersze.pop(0)
+            tekst = "\n".join(wiersze)  # Połącz pozostałe wiersze
+            return tekst, klucz
+        else:
+            print("Nie znaleziono danych do kodowania tekstu lub są źle napisane.")
+            return tekst
+    except FileNotFoundError:
+        print("Nie istnieje plik, podaj poprawną nazwę.")
     
     
 def usunZnaki(tekst, spacje=True, liczby=True):
