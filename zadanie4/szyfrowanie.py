@@ -73,10 +73,9 @@ def vigenere_cipher(tekst):
 
 
 
-def vigenere_cipher2(tekst, znakiPL, spacje, liczby):
+def vigenere_cipher2(do_zakodowania, klucz, znakiPL, spacje, liczby):
     alfabet = "abcdefghijklmnopqrstuvwxyz"
     wynik = ""
-    do_zakodowania, klucz = wczytajPlik(tekst)
     
     if znakiPL:
         alfabet+="ąćęłńóśżź"
@@ -101,10 +100,12 @@ def vigenere_cipher2(tekst, znakiPL, spacje, liczby):
         nowa_litera_idx = (litera_idx + indeks_klucza) % len(alfabet)
         nowa_litera = alfabet[nowa_litera_idx]
         wynik += nowa_litera
-    
-    zapisPliku(wynik, 'zakodowane2')
+   
     return wynik
     
 
-
-print(vigenere_cipher2("dozakodowania.txt", 0,1,1))
+# tekst, klucz = wczytajPlik("dozakodowania.txt")
+# wynik=vigenere_cipher2(tekst, klucz, 0,1,1)
+# print(wynik)
+ 
+# zapisPliku(wynik, 'zakodowane2')
