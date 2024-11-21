@@ -22,9 +22,15 @@ def euklid(g,p):
         tablica.append(t)
         
 
+def potega(a,b,p):
+    wynik=a
+    for i in range(1, b):
+        wynik=(wynik*a)%p
+    print(wynik)
+
 
 def metodaBrutalna(g,p,h):
     for a in range(p):
-        if (g**a)%p==h:
+        if potega(g,a,p)==h:
             print(f"{g}^a (mod {p})={h} dla a={a}")
             return a
