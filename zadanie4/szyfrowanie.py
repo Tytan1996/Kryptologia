@@ -4,21 +4,24 @@ import time
 import re
 
 def wczytajPlik(nazwa_pliku):
-    with open(nazwa_pliku, "r", encoding="utf-8") as plik:
-        tekst = plik.read()
-        #print(tekst)
-        
-    wiersze = tekst.splitlines()
-
-    if wiersze and wiersze[0].startswith("klucz "):
-        klucz = wiersze[0].split()[1]
-        wiersze.pop(0)
-        tekst = "\n".join(wiersze)  # Połącz pozostałe wiersze
-        return tekst, klucz
-    else:
-        print("Nie znaleziono danych do kodowania tekstu lub są źle napisane.")
-        return tekst
-
+    try:
+        with open(nazwa_pliku, "r", encoding="utf-8") as plik:
+            tekst = plik.read()
+            #print(tekst)
+            
+        wiersze = tekst.splitlines()
+    
+        if wiersze and wiersze[0].startswith("klucz "):
+            klucz = wiersze[0].split()[1]
+            wiersze.pop(0)
+            tekst = "\n".join(wiersze)  # Połącz pozostałe wiersze
+            return tekst, klucz
+        else:
+            print("Nie znaleziono danych do kodowania tekstu lub są źle napisane.")
+            return tekst
+    except FileNotFoundError:
+        print("Nie istnieje plik, podaj poprawną nazwę.")
+        raise FileNotFoundError()
     
     
 def usunZnaki(tekst, spacje=True, liczby=True):
@@ -39,8 +42,8 @@ def usunPolskieZnaki(tekst):
         tekst=tekst.replace(znakiPl[i],znaki[i])
     return tekst
 
-def zapisPliku(tekstSzyfrowany):
-    plik=open("zakodowane.txt",'w', encoding="utf-8")
+def zapisPliku(tekstSzyfrowany, nazwa):
+    plik=open(f"{nazwa}.txt",'w', encoding="utf-8")
     plik.write(tekstSzyfrowany)
     plik.close()
 
@@ -65,7 +68,7 @@ def vigenere_cipher(tekst):
         nowa_litera = alfabet[nowa_litera_idx]
         wynik += nowa_litera
 
-    zapisPliku(wynik)
+    zapisPliku(wynik, 'zakodowane')
 
 
 
@@ -73,10 +76,9 @@ def vigenere_cipher(tekst):
 
 
 
-def vigenere_cipher2(tekst, znakiPL, spacje, liczby):
+def vigenere_cipher2(do_zakodowania, klucz, znakiPL, spacje, liczby):
     alfabet = "abcdefghijklmnopqrstuvwxyz"
     wynik = ""
-    do_zakodowania, klucz = wczytajPlik(tekst)
     
     if znakiPL:
         alfabet+="ąćęłńóśżź"
@@ -101,10 +103,12 @@ def vigenere_cipher2(tekst, znakiPL, spacje, liczby):
         nowa_litera_idx = (litera_idx + indeks_klucza) % len(alfabet)
         nowa_litera = alfabet[nowa_litera_idx]
         wynik += nowa_litera
-    
-    #zapisPliku(wynik)
+   
     return wynik
     
 
-
-print(vigenere_cipher2("dozakodowania.txt", 0,1,1))
+# tekst, klucz = wczytajPlik("dozakodowania.txt")
+# wynik=vigenere_cipher2(tekst, klucz, 0,1,1)
+# print(wynik)
+ 
+# zapisPliku(wynik, 'zakodowane2')

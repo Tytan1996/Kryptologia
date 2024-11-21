@@ -4,11 +4,13 @@ import time
 import re
 
 def wczytajPlik(nazwa_pliku):
-    with open(nazwa_pliku + '.txt', "r", encoding="utf-8") as plik:
-        tekst = plik.read()
-        #print(tekst)
-        return tekst
-
+    try:
+        with open(nazwa_pliku + '.txt', "r", encoding="utf-8") as plik:
+            tekst = plik.read()
+            #print(tekst)
+            return tekst
+    except FileNotFoundError:
+        print("Nie istnieje plik, podaj poprawną nazwę.")
 
 def zapisPliku(tekstSzyfrowany, nazwa):
     plik=open(nazwa+".txt",'w', encoding="utf-8")
@@ -25,12 +27,11 @@ def usunPolskieZnaki(tekst):
     return tekst
 
 
-def vigenere_decipher(plik, klucz, kod=None):
+def vigenere_decipher(tekst, klucz, kod=None):
     alfabet = "abcdefghijklmnopqrstuvwxyz"
     znakiPl="ąćęłńóśżź"
     wynik = ""
     klucz=klucz.lower()
-    tekst=wczytajPlik(plik)
     if not kod:
         kod=''
         for i in [any((True for x in znakiPl if x in tekst)), ' ' in tekst, any(x.isdigit() for x in tekst)]:
@@ -59,6 +60,6 @@ def vigenere_decipher(plik, klucz, kod=None):
 
 
 
-wynik=vigenere_decipher("zakodowane2", 'tajnehaslo',11)
-print(wynik)
-zapisPliku(wynik, 'odkodowane2')
+# wynik=vigenere_decipher("zakodowane2", 'tajnehaslo',11)
+# print(wynik)
+# zapisPliku(wynik, 'odkodowane2')
