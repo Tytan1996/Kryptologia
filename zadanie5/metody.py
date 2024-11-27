@@ -38,3 +38,4 @@ def metodaBrutalna(g,p,h):
             #print(f"{g}^a (mod {p})={h} dla a={a}")
             return a,czas
         
+print(euklid(5, 17))
