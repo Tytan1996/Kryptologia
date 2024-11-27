@@ -29,7 +29,6 @@ def generator(g, p):
 
 def generatory(p):
     #wypisuje wszystkie generatory g w pierscieniu Zp i zapisuje je do pliku
-    l = [i for i in range(1, p)]
     gen = []
     for i in range(1,p):
         if generator(i,p) == True:
@@ -39,12 +38,12 @@ def generatory(p):
         plik.write(", ".join(map(str, gen)))
     
     print(f"Generatory w pierścieniu Z_{p}*: {gen}")
-    return gen
     
     
+    
 
 
 
 
-#generator(3,17)
-generatory(17)
+generator(4,17)
+#generatory(17)

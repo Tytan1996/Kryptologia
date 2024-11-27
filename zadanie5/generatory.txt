@@ -1,2 +1,3 @@
 Generatory w pierścieniu Z_17*:
 3, 5, 6, 7, 10, 11, 12, 14
+
