@@ -13,7 +13,7 @@ def metodaShanksa(p,g,h):
         lista.append((g**i)%p)
     while petla:
         licznik+=1
-        hg=(h*(p-186)**(pier*licznik))%p
+        hg=(h*metody.euklid(g, p)**(pier*licznik))%p
         for i in range(len(lista)):
             if hg==lista[i]:
                 j=i
@@ -24,15 +24,19 @@ def metodaShanksa(p,g,h):
     czas=(end-start).microseconds
     return a,czas
 
-wynikiKonczoweShanksa=metodaShanksa(1117,6,527)
-#wynikiKonczoweBrutalna=metody.metodaBrutalna(6, 1117, 527)
-
+p=1049
+g=6
+h=527
+wynikiKonczoweShanksa=metodaShanksa(p,g,h)
 print("Czas metody Shanksa: ")
-print(wynikiKonczoweShanksa[0])
-print("Czas metody brutalnej: ")
-#print(wynikiKonczoweBrutalna[0])
-
-print("Wynik metody Shanksa: ")
 print(wynikiKonczoweShanksa[1])
+print("Wynik metody Shanksa: ")
+print(wynikiKonczoweShanksa[0])
+
+wynikiKonczoweBrutalna=metody.metodaBrutalna(g, p, h)
+
+print("Czas metody brutalnej: ")
+print(wynikiKonczoweBrutalna[1])
+
 print("Wynik metody brutalnej: ")
-#print(wynikiKonczoweBrutalna[1])
+print(wynikiKonczoweBrutalna[0])

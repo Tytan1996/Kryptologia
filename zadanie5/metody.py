@@ -15,19 +15,18 @@ def euklid(g,p):
         t.append(tablica[-1][1]*tablica[-1][-1]+tablica[-2][1])
         t.append(tablica[-1][2]*tablica[-1][-1]+tablica[-2][2])
         
-        print(tablica)
+        #print(tablica)
         if t[0]==1:
             return t[-1]
             break
         t.append(-(tablica[-1][0]//t[0]))
-        tablica.append(t)
-        
+        tablica.append(t)      
 
 def potega(a,b,p):
     wynik=a
     for i in range(1, b):
         wynik=(wynik*a)%p
-    #print(wynik)
+    return wynik
 
 
 def metodaBrutalna(g,p,h):
@@ -36,6 +35,6 @@ def metodaBrutalna(g,p,h):
         if potega(g,a,p)==h:
             end = datetime.datetime.now()
             czas=(end-start).microseconds
-            print(f"{g}^a (mod {p})={h} dla a={a}")
-            return a
-metodaBrutalna(1117,6,527)
+            #print(f"{g}^a (mod {p})={h} dla a={a}")
+            return a,czas
+        
