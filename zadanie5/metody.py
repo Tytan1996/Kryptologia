@@ -4,6 +4,7 @@ Created on Thu Nov 21 10:38:14 2024
 
 @author: 48513
 """
+import datetime
 
 def euklid(g,p):
     tablica=[[p,1,0],
@@ -26,11 +27,15 @@ def potega(a,b,p):
     wynik=a
     for i in range(1, b):
         wynik=(wynik*a)%p
-    print(wynik)
+    #print(wynik)
 
 
 def metodaBrutalna(g,p,h):
+    start = datetime.datetime.now()
     for a in range(p):
         if potega(g,a,p)==h:
+            end = datetime.datetime.now()
+            czas=(end-start).microseconds
             print(f"{g}^a (mod {p})={h} dla a={a}")
             return a
+metodaBrutalna(1117,6,527)
