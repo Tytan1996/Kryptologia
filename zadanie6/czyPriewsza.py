@@ -78,6 +78,9 @@ def priewszaF(a,s):
             for t in range(2,a-2):
                 if math.pow(t, (a-1))%a!=1:
                     p=False
+                    end = datetime.datetime.now()
+                    czas=(end-start).microseconds
+                    return p, czas
                     break
     end = datetime.datetime.now()
     czas=(end-start).microseconds
