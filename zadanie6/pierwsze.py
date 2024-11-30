@@ -53,7 +53,8 @@ def potega_m(a,b,n):
             wynik = (wynik*a) % n
         a = a*a % n
         b=b//2
-    print(wynik)
+    #print(wynik)
     return wynik
+
 
 potega_m(25,152,41)

@@ -6,6 +6,7 @@ This is a temporary script file.
 """
 import datetime
 import math
+import pierwsze
 
 def ur(a):
     u=0
@@ -15,7 +16,7 @@ def ur(a):
         u=u+1
         return u, r
 
-def pirewszaMR(a,s):
+def pierwszaMR(a,s):
     start = datetime.datetime.now()
     p=True
     if a==1:
@@ -28,11 +29,12 @@ def pirewszaMR(a,s):
         (u, r) = ur(a)
         for i in range(s):
             for t in range(2,a-2):
+                z=pierwsze.potega_m(t,r,a)
                 z=pow(t,r)%a
                 if z!=1:
                     j=0
                     while z!=a-1:
-                        z=(z**2)%a
+                        z=pierwsze.potega_m(z,2,a)
                         j=j+1
                         if(z==1) or (j==u):
                             p=False
@@ -44,7 +46,7 @@ def pirewszaMR(a,s):
     czas=(end-start).microseconds
     return p,czas
 
-def priewsza(a):
+def pierwsza(a):
     start = datetime.datetime.now()
     p=True
     if a==1:
@@ -64,7 +66,7 @@ def priewsza(a):
     czas=(end-start).microseconds
     return p, czas
 
-def priewszaF(a,s):
+def pierwszaF(a,s):
     start = datetime.datetime.now()
     p=True
     if a==1:
@@ -76,7 +78,8 @@ def priewszaF(a,s):
     else:
         for i in range(1,s):
             for t in range(2,a-2):
-                if math.pow(t, (a-1))%a!=1:
+                if pierwsze.potega_m(t,a-1,a)!=1:
+                #if math.pow(t, (a-1))%a!=1:
                     p=False
                     end = datetime.datetime.now()
                     czas=(end-start).microseconds
@@ -86,11 +89,12 @@ def priewszaF(a,s):
     czas=(end-start).microseconds
     return p, czas
 
-a=101
+a=9
 s=9
-wartosci=priewsza(a)
+    
+wartosci=pierwsza(a)
 print(wartosci[0])
-wartosci1=priewszaF(a,s)
+wartosci1=pierwszaF(a,s)
 print(wartosci1[0])
-wartosci2=pirewszaMR(a,s)
+wartosci2=pierwszaMR(a,s)
 print(wartosci2[0])
