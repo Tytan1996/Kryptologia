@@ -6,6 +6,8 @@ import math
 
 
 def pierwsza(a):
+    if a <= 1:
+        return 0
     p = 1  
     while p == 1:  
         for i in range(2, math.floor(math.sqrt(a)) + 1):
@@ -22,13 +24,18 @@ def pierwsza(a):
         return p
 
 
-#pierwsza(827)
+
+#pierwsza(1)
 
 def liczby_pierwsze(k,x,y):
-    #k - ilość liczb pierwszych
+    #k - ilość liczb pierwszych, jeżeli k=0 wyświetla wszystkie
     #x - początek zakresu
     #y - koniec zakresu
-    #dodac sprawdzenie czy x<y jak nie to albo błąd albo podmianka
+    k = int(k)
+    x = int(x)
+    y = int(y)
+    if y < x:
+        x, y = y, x #zamiana x i y
     licznik=0
     l=[]
     for i in range(x,y+1):
@@ -40,12 +47,17 @@ def liczby_pierwsze(k,x,y):
     print(l)
     return l
         
-#liczby_pierwsze(35, 65, 100)
+#liczby_pierwsze(0, 100, 50)
 
 def potega_m(a,b,n):
     #a - podstawa potęgi
     #b - wykładnik potęgi
     #n - dzielenie modulo 
+    a = int(a)
+    b = int(b)
+    n = int(n)
+    if n == 0:
+        raise ValueError("Argument 'n' nie może być równy 0!")
     a = a % n
     wynik = 1
     while b>0:
@@ -56,5 +68,9 @@ def potega_m(a,b,n):
     #print(wynik)
     return wynik
 
+<<<<<<< HEAD
 
 potega_m(25,152,41)
+=======
+potega_m(25,152.5,6)
+>>>>>>> d5f3708fd2541be2573bec08b23021942c677ce6
