@@ -49,6 +49,7 @@ def pierwszaMR(a,s):
 def pierwsza(a):
     start = datetime.datetime.now()
     p=True
+    print(math.sqrt(a))
     if a==1:
         p=False
     elif (a==2) or (a== 3):
@@ -57,7 +58,8 @@ def pierwsza(a):
         p=False
     else:
         while p==1:
-            for i in range(2,int(math.sqrt(a))):
+            for i in range(2,int(math.sqrt(a))+1):
+                print(i)
                 if (a%i)==0:
                     p=False
                     break
@@ -89,7 +91,7 @@ def pierwszaF(a,s):
     czas=(end-start).microseconds
     return p, czas
 
-a=9
+a=6
 s=9
     
 wartosci=pierwsza(a)

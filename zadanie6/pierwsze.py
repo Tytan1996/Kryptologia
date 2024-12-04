@@ -68,9 +68,6 @@ def potega_m(a,b,n):
     #print(wynik)
     return wynik
 
-<<<<<<< HEAD
 
 potega_m(25,152,41)
-=======
 potega_m(25,152.5,6)
->>>>>>> d5f3708fd2541be2573bec08b23021942c677ce6
