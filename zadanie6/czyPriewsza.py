@@ -30,7 +30,7 @@ def pierwszaMR(a,s):
         for i in range(s):
             for t in range(2,a-2):
                 z=pierwsze.potega_m(t,r,a)
-                z=pow(t,r)%a
+                #z=pow(t,r)%a
                 if z!=1:
                     j=0
                     while z!=a-1:
