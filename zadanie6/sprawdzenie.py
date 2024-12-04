@@ -30,7 +30,7 @@ def RandomNumbers_test(test, zakres, ilosc, s=9):
     confusion_matrix={"TP":0, "FP":0, "FN":0, "TN": 0}
     t=0
     for l in liczby:
-        wynik, czas=test(l)
+        wynik, czas=test(l,s)
         t+=czas
         if wynik and l not in pierwsze:
             confusion_matrix["FP"]+=1
