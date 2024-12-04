@@ -15,7 +15,7 @@ from czyPriewsza import pierwszaF, pierwszaMR
 def RandomNumbers_test(test, zakres, ilosc, s=9):
     if zakres[1]+1-zakres[0]<ilosc:
         ilosc=zakres[1]+1-zakres[0]
-        liczby=list.range(zakres[0], zakres[1]+1)
+        liczby=list(range(zakres[0], zakres[1]+1))
         pierwsze=prime.liczby_pierwsze(0, zakres[0], zakres[1])
     else:
         pierwsze= prime.liczby_pierwsze(ilosc//4, zakres[0], zakres[1])
@@ -30,7 +30,7 @@ def RandomNumbers_test(test, zakres, ilosc, s=9):
     confusion_matrix={"TP":0, "FP":0, "FN":0, "TN": 0}
     t=0
     for l in liczby:
-        wynik, czas=test(l,s)
+        wynik, czas=test(l)
         t+=czas
         if wynik and l not in pierwsze:
             confusion_matrix["FP"]+=1
