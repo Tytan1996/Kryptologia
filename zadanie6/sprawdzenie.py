@@ -34,7 +34,7 @@ def RandomNumbers_test(test, zakres, ilosc, s=9):
         t+=czas
         if wynik and l not in pierwsze:
             confusion_matrix["FP"]+=1
-            #print(l)
+            print(l)
         elif not wynik and l in pierwsze:
             confusion_matrix["FN"]+=1
             #print(l)
