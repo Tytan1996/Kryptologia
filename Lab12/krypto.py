@@ -44,9 +44,41 @@ def dzielenieNaBloki(tekstWBitach):
         bloki.append(tekstWBitach[i:i+64])
     if len(bloki[-1])<64:
         bloki[-1]+='1'*(64 - len(bloki[-1]))
+    
+    return bloki;
 
 
-
+def połaczenieBloków(Bloki):
+    tekst=""
+    for i in range(len(Bloki)):
+        tekst+=Bloki[i]
         
+    return tekst
+def zamianaNaTekst(tekst):
+    znaki = []
+    
+    # Podział na 8-bitowe segmenty
+    for i in range(0, len(tekst), 8):
+        segment = tekst[i:i+8]
+        
+        # Usuń bit parzystości (ostatni bit)
+        if len(segment) == 8:
+            segment_bez_parzystości = segment[:-1]  # Usuń ostatni bit
+            
+            # Zamiana na znak ASCII
+            znak = chr(int(segment_bez_parzystości, 2))
+            znaki.append(znak)
+    
+    # Połączenie znaków w tekst
+    tekst = ''.join(znaki)
+    return tekst
+
+def zapisPliku(tekstSzyfrowany, nazwa):
+    plik=open(f"{nazwa}.txt",'w', encoding="utf-8")
+    plik.write(tekstSzyfrowany)
+    plik.close()
 tekst=zamianaNaBity(slowo)
-dzielenieNaBloki(tekst)
+bloki=dzielenieNaBloki(tekst)
+calyTekst=połaczenieBloków(bloki)
+calyTekst1=zamianaNaTekst(calyTekst)
+print(calyTekst1)
