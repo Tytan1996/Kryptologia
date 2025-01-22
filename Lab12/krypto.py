@@ -72,13 +72,22 @@ def zamianaNaTekst(tekst):
     # Połączenie znaków w tekst
     tekst = ''.join(znaki)
     return tekst
-
+'''
 def zapisPliku(tekstSzyfrowany, nazwa):
     plik=open(f"{nazwa}.txt",'w', encoding="utf-8")
     plik.write(tekstSzyfrowany)
     plik.close()
+'''
+def zapisPliku(tekstSzyfrowany, klucz, nazwa):
+    with open(f"{nazwa}.txt", 'w', encoding="utf-8") as plik:
+        # Zapisz klucz w pierwszej linii
+        plik.write(f"klucz {klucz}\n")
+        # Zapisz zaszyfrowany tekst poniżej
+        plik.write(tekstSzyfrowany)
 tekst=zamianaNaBity(slowo)
 bloki=dzielenieNaBloki(tekst)
 calyTekst=połaczenieBloków(bloki)
 calyTekst1=zamianaNaTekst(calyTekst)
-print(calyTekst1)
+#print(calyTekst1)
+
+
