@@ -12,15 +12,15 @@ def szyfrowanie():
     zaszyfrowaneBloki = CBC(bloki, klucz, IV, perm, mode="szyfr") 
     print("Zaszyfrowane bloki: ", zaszyfrowaneBloki)
     zaszyfrowanyTekstWBitach = połaczenieBloków(zaszyfrowaneBloki)
-    zaszyfrowanyTekst = zamianaNaTekst(zaszyfrowanyTekstWBitach)
-    print('zaszyfrowanyTekst', zaszyfrowanyTekst)
-    zapisPliku(zaszyfrowanyTekst, klucz, "zaszyfrowany_plik")
+    #zaszyfrowanyTekst = zamianaNaTekst(zaszyfrowanyTekstWBitach)
+    print('zaszyfrowanyTekst', zaszyfrowanyTekstWBitach)
+    zapisPliku(zaszyfrowanyTekstWBitach, klucz, "zaszyfrowany_plik")
 
 def deszyfrowanie():
     zaszyfrowanyTekst, klucz = wczytajPlik("zaszyfrowany_plik.txt")
     print('zaszyfrowany tekst:', zaszyfrowanyTekst)
-    zaszyfrowaneBity = zamianaNaBity(zaszyfrowanyTekst)
-    blokiZaszyfrowane = dzielenieNaBloki(zaszyfrowaneBity)
+    #zaszyfrowaneBity = zamianaNaBity(zaszyfrowanyTekst)
+    blokiZaszyfrowane = dzielenieNaBloki(zaszyfrowanyTekst)
     print("Bloki zaszyfrowane: ", blokiZaszyfrowane)
     odszyfrowaneBloki = []
     IV = "1101011100111011001100100101110011001011110011100101011101111000"  
@@ -37,3 +37,11 @@ def deszyfrowanie():
 
 szyfrowanie()
 deszyfrowanie()
+
+
+def zapisPliku(tekstSzyfrowany, klucz, nazwa):
+    with open(f"{nazwa}.txt", 'w', encoding="utf-8") as plik:
+        # Zapisz klucz w pierwszej linii
+        plik.write(f"klucz {klucz}\n")
+        # Zapisz zaszyfrowany tekst poniżej
+        plik.write(tekstSzyfrowany)
