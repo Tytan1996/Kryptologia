@@ -1,24 +1,19 @@
 #
 #%% Imports
 import sys
-import os
+
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.backends.backend_qtagg import NavigationToolbar2QT as NavigationToolbar
-from matplotlib.widgets import CheckButtons
 from PyQt5.QtCore import Qt, QStandardPaths
-from PyQt5.QtWidgets import QMainWindow,  QMenuBar, QMessageBox,  QApplication,  QVBoxLayout, QGroupBox, QHBoxLayout, QFormLayout
-from PyQt5.QtWidgets import QLineEdit, QPushButton, QAction, QFileDialog, QComboBox, QWidget, QLabel, QMenu, QInputDialog
-import pandas as pd
-import numpy as np
-from pathlib import Path
+from PyQt5.QtWidgets import QMainWindow, QMessageBox,  QApplication,  QVBoxLayout
+from PyQt5.QtWidgets import QPushButton, QFileDialog, QWidget, QLabel
 from CBC import *
 from krypto import *
 from matplotlib.widgets import AxesWidget, Button
 
 
 
-APP_NAME='Plot RfG 0.2'
+APP_NAME='DES'
     
 #%% App Windows      
  
@@ -30,7 +25,6 @@ class DES:
         if mode:
             self.tekst=tekst
             self.szyfr=self.szyfrowanie()
-            self.zapisPliku("Tekst_szyfr")
         else:
             self.szyfr=tekst
             self.tekst=self.deszyfrowanie()
@@ -95,7 +89,7 @@ class MainWindow(QMainWindow):
         self.axes=self.fig.subplots(1,2)
         self.DES=DES
         self.path=filepath
-        self.show_tekst=True
+        self.show_tekst=False
         self.show_text()
         
         self.button=Button(self.axes[0], '', color='white')
@@ -104,6 +98,7 @@ class MainWindow(QMainWindow):
         
         central_widget = QWidget()
         layout = QVBoxLayout(central_widget)
+        layout.setContentsMargins(20, 20, 20, 20)
 
         # Dodanie płótna
         layout.addWidget(self.canvas)
@@ -140,21 +135,28 @@ class MainWindow(QMainWindow):
         
     
     def zapiszPlik(self):
-        filename, _ = QFileDialog.getSaveFileName(self, "Zapisz wykres", self.path,  "txt (*.txt)")
+        filename, _ = QFileDialog.getSaveFileName(self, "Zapisz plik", self.path,  "txt (*.txt)")
         if filename:
             self.DES.zapisPliku(filename)
+        
+            message_box = QMessageBox(self)
+            message_box.setWindowTitle("Zapisano")
+            message_box.setText(f"Zapisano {filename.split('/')[-1]}")
+            message_box.exec_()
+
     
     
     def onclick(self, event):
-        self.show_tekst!=self.show_tekst
-        print("klik")
+        self.show_tekst= not self.show_tekst
         self.axes[0].clear()
         self.axes[0].set_xticks([])
         self.axes[0].set_yticks([])
+        self.axes[0].set_title("Tekst:")
         self.axes[0].text(0.05, 0.5, self.DES.tekst[:500] if self.show_tekst else "Wyświetlanie wyłączone",
                          wrap=True,
                          horizontalalignment="left", verticalalignment="center", fontsize=10)
 
+        self.canvas.draw()
     
 
 
