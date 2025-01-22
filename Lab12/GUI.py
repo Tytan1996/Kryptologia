@@ -14,6 +14,7 @@ import numpy as np
 from pathlib import Path
 from CBC import *
 from krypto import *
+from matplotlib.widgets import AxesWidget, Button
 
 
 
@@ -29,6 +30,7 @@ class DES:
         if mode:
             self.tekst=tekst
             self.szyfr=self.szyfrowanie()
+            self.zapisPliku("Tekst_szyfr")
         else:
             self.szyfr=tekst
             self.tekst=self.deszyfrowanie()
@@ -54,12 +56,12 @@ class DES:
         zaszyfrowaneBloki = CBC(bloki, klucz, IV, perm, mode="szyfr") 
         zaszyfrowanyTekstWBitach = połaczenieBloków(zaszyfrowaneBloki)
         #zaszyfrowanyTekst = zamianaNaTekst(zaszyfrowanyTekstWBitach)
-        zapisPliku(zaszyfrowanyTekstWBitach, klucz, "zaszyfrowany_plik")
         #print(zaszyfrowanyTekstWBitach)
         return zaszyfrowanyTekstWBitach
     
     def deszyfrowanie(self):
-        klucz, IV , perm = self.get_parms()
+        klucz, IV , perm = self.get_params()
+        print(klucz)
         #zaszyfrowaneBity = zamianaNaBity(zaszyfrowanyTekst)
         blokiZaszyfrowane = dzielenieNaBloki(self.szyfr)
         ##print("Bloki zaszyfrowane: ", blokiZaszyfrowane)
@@ -71,7 +73,7 @@ class DES:
         return odszyfrowanyTekst
 
     def zapisPliku(self, nazwa):
-        if mode:
+        if self.mode:
             tekst=self.szyfr
         else:
             tekst=self.tekst
@@ -90,12 +92,14 @@ class MainWindow(QMainWindow):
         self.setWindowTitle(APP_NAME)
         self.fig = plt.figure(layout='constrained', figsize=(15, 12))
         self.canvas = FigureCanvas(self.fig)
-        self.fig.suptitle("DES")
         self.axes=self.fig.subplots(1,2)
         self.DES=DES
         self.path=filepath
         self.show_tekst=True
         self.show_text()
+        
+        self.button=Button(self.axes[0], '', color='white')
+        self.button.on_clicked(self.onclick)
         
         
         central_widget = QWidget()
@@ -103,6 +107,11 @@ class MainWindow(QMainWindow):
 
         # Dodanie płótna
         layout.addWidget(self.canvas)
+        
+        zapisz=QPushButton("Zapisz", self)
+        zapisz.clicked.connect(self.zapiszPlik)
+        zapisz.setMinimumSize(120, 40) 
+        layout.addWidget(zapisz)
 
         self.setCentralWidget(central_widget)
         self.showMaximized()
@@ -131,12 +140,21 @@ class MainWindow(QMainWindow):
         
     
     def zapiszPlik(self):
-        filename, _ = QFileDialog.getSaveFileName(self, "Zapisz wykres", self.path,  "Figury (*.txt)")
+        filename, _ = QFileDialog.getSaveFileName(self, "Zapisz wykres", self.path,  "txt (*.txt)")
         if filename:
             self.DES.zapisPliku(filename)
     
     
-    
+    def onclick(self, event):
+        self.show_tekst!=self.show_tekst
+        print("klik")
+        self.axes[0].clear()
+        self.axes[0].set_xticks([])
+        self.axes[0].set_yticks([])
+        self.axes[0].text(0.05, 0.5, self.DES.tekst[:500] if self.show_tekst else "Wyświetlanie wyłączone",
+                         wrap=True,
+                         horizontalalignment="left", verticalalignment="center", fontsize=10)
+
     
 
 
