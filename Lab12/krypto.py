@@ -63,11 +63,12 @@ def zamianaNaTekst(tekst):
         
         # Usuń bit parzystości (ostatni bit)
         if len(segment) == 8:
-            segment_bez_parzystości = segment[:-1]  # Usuń ostatni bit
-            
-            # Zamiana na znak ASCII
-            znak = chr(int(segment_bez_parzystości, 2))
-            znaki.append(znak)
+            if(segment != '11111111'):
+                segment_bez_parzystości = segment[:-1]  # Usuń ostatni bit
+                
+                # Zamiana na znak ASCII
+                znak = chr(int(segment_bez_parzystości, 2))
+                znaki.append(znak)
     
     # Połączenie znaków w tekst
     tekst = ''.join(znaki)
