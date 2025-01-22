@@ -5,8 +5,8 @@ import sys
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
 from PyQt5.QtCore import Qt, QStandardPaths
-from PyQt5.QtWidgets import QMainWindow, QMessageBox,  QApplication,  QVBoxLayout
-from PyQt5.QtWidgets import QPushButton, QFileDialog, QWidget, QLabel
+from PyQt5.QtWidgets import QMainWindow, QMessageBox,  QApplication,  QVBoxLayout, QHBoxLayout
+from PyQt5.QtWidgets import QPushButton, QFileDialog, QWidget, QLabel, QLineEdit
 from CBC import *
 from krypto import *
 from matplotlib.widgets import AxesWidget, Button
@@ -55,10 +55,7 @@ class DES:
     
     def deszyfrowanie(self):
         klucz, IV , perm = self.get_params()
-        print(klucz)
-        #zaszyfrowaneBity = zamianaNaBity(zaszyfrowanyTekst)
         blokiZaszyfrowane = dzielenieNaBloki(self.szyfr)
-        ##print("Bloki zaszyfrowane: ", blokiZaszyfrowane)
         odszyfrowaneBloki = []
         odszyfrowaneBloki_str = ''.join(CBC(blokiZaszyfrowane, klucz, IV, perm, mode="deszyfr"))
         odszyfrowaneBloki.append(odszyfrowaneBloki_str)
@@ -280,9 +277,10 @@ class MenuWindow(QWidget):
 
 
     def confirm_selection(self):
-        des=DES(self.tekst, self.klucz, self.toggle_button.isChecked())
-        self.main_app.open_Main(self.default_path, des)
-        self.close()
+        if self.file1_line.itemAt(0).widget().text() and self.file1_line.itemAt(1).widget().text():
+            des=DES(self.tekst, self.klucz, self.toggle_button.isChecked())
+            self.main_app.open_Main(self.default_path, des)
+            self.close()
             
 
         
