@@ -1,7 +1,7 @@
 import cv2 as cv
 
 
-tekst = "Ala ma kota, kot ma Ale"
+
 def zamianaNaBity(tekst):
     tablicaBitow=[]
     for i in range(len(tekst)):
@@ -20,9 +20,9 @@ def zamianaNaBity(tekst):
     return tekstWBitach
 
 img=cv.imread('pobrane.jpeg')
+print(img)
 
-
-wiadomosc="Zaczyname akcje jutro rano!"
+wiadomosc="Jutro 0 10 lekrarz"
 
 def zakodowanieWiadomosciWObrazu(bitowaWiadomosc):
     data_index = 0
@@ -47,6 +47,8 @@ def zakodowanieWiadomosciWObrazu(bitowaWiadomosc):
 
     # Zapisz zakodowany obraz do pliku
     cv.imwrite("UkrytaWiadomosc.jpeg", img)
+    print("nn")
+    print(img)
     print("Wiadomosc zostala zapisana")
                     
 bity=zamianaNaBity(wiadomosc)
